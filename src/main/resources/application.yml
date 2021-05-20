@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: springboot-2018
+  datasource:
+    url: 'jdbc:mysql://localhost:3306/webtest?
+          createDatabaseIfNotExist=true
+          &serverTimezone=Asia/Shanghai'
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initialization-mode: always
+
+  jackson:
+    default-property-inclusion: non_null
+
+logging:
+  level:
+    root: warn
+    com:
+      example: debug
+  pattern:
+    console: '%-5level %C.%M[%line] - %msg%n'
