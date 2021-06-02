@@ -45,5 +45,6 @@ public class SwaggerConfig {
                 .termsOfServiceUrl("www.footmark.top")//网站url等
                 .version("1.0")
                 .build();
+
     }
 }

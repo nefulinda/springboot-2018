@@ -1,23 +1,24 @@
-create table if not exists Admin
+create table if not exists user
 (
-    id          bigint(19) not null primary key,
-    username    varchar(45),
-    password    varchar(45),
-    create_time datetime   not null default current_timestamp,
-    update_time datetime   not null default current_timestamp on update current_timestamp,
-    unique (id),
-    index (id)
+    id bigint(19) not null primary key ,
+    name varchar(8) not null ,
+    number varchar(12) not null ,
+    password varchar(65) not null ,
+    role int not null default 1,
+    create_time datetime not null default current_timestamp,
+    update_time datetime not null default current_timestamp on update current_timestamp,
+    version int default 0,
+    unique (number),
+    index (number)
 );
 
 create table if not exists teacher
 (
-    id          bigint(19) not null primary key,#教师编号
-    username    varchar(45),
-    password    varchar(45),
-    phone       bigint(11),#电话号码
-    email       varchar(45),#邮箱
-    post        varchar(32),#职位
-    college     varchar(45),#所属学院
+    id          bigint(19) not null primary key,
+    phone       bigint(11),
+    email       varchar(45),
+    post        varchar(32),
+    college     varchar(45),
     course      varchar(45),
     create_time datetime   not null default current_timestamp,
     update_time datetime   not null default current_timestamp on update current_timestamp,
@@ -28,25 +29,21 @@ create table if not exists teacher
 create table if not exists student
 (
     id            bigint(19) not null primary key,
-    username      varchar(45),
-    password      varchar(45),
-    teacher_id    bigint(19) not null,
-    laboratory_id bigint(19)          default null,
+    clazz        varchar(8),
     college       varchar(45),
     create_time   datetime   not null default current_timestamp,
     update_time   datetime   not null default current_timestamp on update current_timestamp,
     unique (id),
-    index (id),
-    index (teacher_id)
+    index (id)
 );
 create table if not exists laboratory
 (
     id                bigint(19) not null primary key,
     name              varchar(32),
     teacher_id        bigint(19)          default null,
-    laboratory_number int        not null,
     laboratory_msg    int default 0,
     update_time       datetime   not null default current_timestamp on update current_timestamp,
+    version int default 0,
     index (id),
     index (laboratory_msg),
     index (teacher_id)
@@ -59,6 +56,7 @@ create table if not exists laboratory_student
     laboratory_id bigint (19) not null ,
     create_time datetime    not null default current_timestamp,
     update_time datetime    not null default current_timestamp on update current_timestamp,
+    version int default 0,
     index (id),
     index (student_id),
     index (laboratory_id)
@@ -70,6 +68,7 @@ create table if not exists course
     teacher_id  bigint(19)  not null,
     create_time datetime    not null default current_timestamp,
     update_time datetime    not null default current_timestamp on update current_timestamp,
+    version int default 0,
     index (id),
     index (teacher_id)
 );
@@ -80,6 +79,7 @@ create table if not exists student_course
     course_id bigint(19) not null ,
     create_time datetime not null default current_timestamp,
     update_time datetime not null default current_timestamp on update current_timestamp,
+    version int default 0,
     index (course_id),
     index (student_id)
 );
