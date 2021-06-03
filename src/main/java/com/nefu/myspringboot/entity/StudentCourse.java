@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-@TableName("student_course")
+@TableName(value = "student_course")
 public class StudentCourse {
     private Long id;
     private Long studentId;

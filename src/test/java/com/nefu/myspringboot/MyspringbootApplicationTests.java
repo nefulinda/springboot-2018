@@ -2,6 +2,7 @@ package com.nefu.myspringboot;
 
 //import com.alibaba.druid.pool.DruidDataSource;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.nefu.myspringboot.entity.User;
 import com.nefu.myspringboot.mapper.UserMapper;
@@ -27,16 +28,25 @@ class MyspringbootApplicationTests {
     @Test
     void  addUser(){
         User user = new User();
-        user.setName("Admin");
-        user.setNumber("2018214316");
-        user.setPassword("2018214316");
+        user.setName("admin");
+        user.setNumber("2018214315");
+        user.setPassword("2018214315");
         user.setRole(9);
         userMapper.insert(user);
     }
     @Test
+    public void getUserByName() {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("name", "admin").orderByAsc("number");
+        for (User user : userMapper.selectList(queryWrapper)) {
+            System.out.println(user);
+        }
+    }
+    @Test
     void  selectUser(){
-        User  user = userMapper.selectById(1400028053758496769L);
-        System.out.println(user);
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("number", "2018214316");
+        System.out.println(userMapper.selectOne(queryWrapper));
 
     }
     @Test
@@ -50,7 +60,7 @@ class MyspringbootApplicationTests {
     //分页查询
     @Test
     void  selectPage(){
-        Page<User> page = new Page(1,3);
+        Page<User> page = new Page(1,12);
         Page<User> userPage = userMapper.selectPage(page,null);
         //返回对象得到分页所有数据
         long pages = userPage.getPages();//总页数

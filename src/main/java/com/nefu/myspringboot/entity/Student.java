@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-@ApiModel("学生")
+@ApiModel(value = "学生")
 public class Student {
     @ApiModelProperty("学生编号")
     private Long id;

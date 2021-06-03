@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-@TableName("laboratory_student")
+@TableName(value = "laboratory_student")
 public class LaboratoryStudent {
     private Long id;
     private String name;

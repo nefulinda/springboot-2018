@@ -15,11 +15,8 @@ create table if not exists user
 create table if not exists teacher
 (
     id          bigint(19) not null primary key,
-    phone       bigint(11),
-    email       varchar(45),
     post        varchar(32),
     college     varchar(45),
-    course      varchar(45),
     create_time datetime   not null default current_timestamp,
     update_time datetime   not null default current_timestamp on update current_timestamp,
     unique (id),
