@@ -21,8 +21,8 @@ public class Laboratory {
     private Long id;
     @ApiModelProperty("实验室名称")
     private String name;
-    @ApiModelProperty("实验室编号")
-    private Long teacherId;
+    @ApiModelProperty("实验室机器数量")
+    private  Integer number;
     @ApiModelProperty("实验室基本状态")
     private Integer msg;
     @TableField(updateStrategy = FieldStrategy.NEVER)

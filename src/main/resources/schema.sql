@@ -50,13 +50,13 @@ create table if not exists laboratory_student
     id          bigint(19)  not null primary key,
     name        varchar(45) not null,
     student_id  bigint(19)  not null,
-    laboratory_id bigint (19) not null ,
+    teacher_id bigint (19) not null ,
     create_time datetime    not null default current_timestamp,
     update_time datetime    not null default current_timestamp on update current_timestamp,
     version int default 0,
     index (id),
     index (student_id),
-    index (laboratory_id)
+    index (teacher_id)
 );
 create table if not exists course
 (
