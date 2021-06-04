@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TeacherDTO {
+    private Long tid;
     private String name;
     private String number;
     private String post;

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentDTO {
+    private Long sid;
     private String name;
     private String number;
     private String clazz;

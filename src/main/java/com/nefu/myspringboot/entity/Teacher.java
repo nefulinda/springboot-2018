@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ApiModel(value = "教师类")
 public class Teacher {
-    @ApiModelProperty("教师编号")
+    @ApiModelProperty("教师编号/工号")
     private Long id;
     @ApiModelProperty("职位")
     private String post;

@@ -19,7 +19,7 @@ public class LaboratoryStudent {
     private Long id;
     private String name;
     private Long studentId;
-    private Long laboratoryId;
+    private Long teacherId;
     @TableField(updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime createTime;
 

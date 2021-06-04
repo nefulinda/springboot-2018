@@ -20,7 +20,7 @@ public class User {
     private Long id;
     @ApiModelProperty("姓名")
     private String name;
-    @ApiModelProperty("学号")
+    @ApiModelProperty("学号/工号")
     private String number;
     @ApiModelProperty("密码")
     private String password;
