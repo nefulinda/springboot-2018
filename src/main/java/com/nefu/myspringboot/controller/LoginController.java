@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
-
 @Api(value = "处理登录/未登录操作请求")
 @RestController
 @RequestMapping("/api/")
@@ -19,16 +17,19 @@ public class LoginController {
     public String login() {
         return "sss";
     }
-   @GetMapping("/get/user")
-    public User user(){
+
+    @GetMapping("/get/user")
+    public User user() {
         return user();
-   }
+    }
+
     @GetMapping("/get/teacher")
-   public Teacher teacher(){
+    public Teacher teacher() {
         return teacher();
-   }
-   @GetMapping("/get/student")
-    public Student student(){
+    }
+
+    @GetMapping("/get/student")
+    public Student student() {
         return student();
-   }
+    }
 }

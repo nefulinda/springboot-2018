@@ -37,13 +37,13 @@ create table if not exists laboratory
 (
     id                bigint(19) not null primary key,
     name              varchar(32),
-    teacher_id        bigint(19)          default null,
+    number        bigint(19)          default null,
     laboratory_msg    int default 0,
     update_time       datetime   not null default current_timestamp on update current_timestamp,
     version int default 0,
     index (id),
-    index (laboratory_msg),
-    index (teacher_id)
+    index (laboratory_msg)
+
 );
 create table if not exists laboratory_student
 (

@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CourseDTO {
     private Long cid;
+    private String name;
     private String number;
     private TeacherDTO teacherDTO;
-    private List<StudentDTO> studentDTOS;
 }
