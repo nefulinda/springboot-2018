@@ -3,7 +3,6 @@ package com.nefu.myspringboot.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.nefu.myspringboot.common.Role;
-import com.nefu.myspringboot.dto.LaboratoryDTO;
 import com.nefu.myspringboot.dto.StudentDTO;
 import com.nefu.myspringboot.dto.TeacherDTO;
 import com.nefu.myspringboot.entity.Student;
@@ -42,23 +41,31 @@ public class UserService {
     @Autowired
     private LaboratoryStudentMapper laboratoryStudentMapper;
 
+    //修改权限
+    public void updateRole(User u) {
+        userMapper.updateById(User.builder().id(u.getId()).role(u.getRole()).build());
+    }
 
+    //通过名字查询
     public List<User> getUserByName(String name) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("name", name).orderByDesc("number");
         return userMapper.selectList(queryWrapper);
     }
 
+    //查询指定学号或工号的用户
     public User getUserByNumber(String number) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("number", number);
         return userMapper.selectOne(queryWrapper);
     }
 
+    //修改密码
     public void updatePassword(long uid, String pwd) {
         userMapper.updateById(User.builder().id(uid).password(encoder.encode(pwd)).build());
     }
 
+    //增加老师
     public Teacher addTeacher(TeacherDTO teacher) {
         User u = User.builder()
                 .name(teacher.getName())
@@ -78,6 +85,7 @@ public class UserService {
         return t;
     }
 
+    //删除老师
     public void deleteTeacher(TeacherDTO teacher) {
         if (teacher != null) {
             teacherMapper.deleteById(teacher.getTid());
@@ -87,7 +95,7 @@ public class UserService {
 
     /*
      *  查询老师
-     * 具体未实现
+     *
      *
      */
     @Cacheable(value = "teachers")
@@ -95,6 +103,7 @@ public class UserService {
         return teacherMapper.list();
     }
 
+    //修改老师信息
     public boolean updateTeacher(TeacherDTO teacher) {
         Teacher t = teacherMapper.selectById(teacher.getTid());
         User u = userMapper.selectById(teacher.getTid());
@@ -109,6 +118,7 @@ public class UserService {
         }
     }
 
+    //增加学生
     @CacheEvict(value = "students", allEntries = true)
     public void addStudents(List<StudentDTO> students, long cid) {
         for (StudentDTO sDTO : students) {
@@ -151,6 +161,7 @@ public class UserService {
         }
     }
 
+    //修改学生信息
     public boolean updateStudent(StudentDTO student) {
         Student s = studentMapper.selectById(student.getSid());
         User u = userMapper.selectById(student.getSid());
@@ -165,13 +176,16 @@ public class UserService {
 
     }
 
+    //删除学生
     public void deleteStudent(StudentDTO student) {
         if (student != null) {
-            teacherMapper.deleteById(student.getSid());
             userMapper.deleteById(student.getSid());
+            studentMapper.deleteById(student.getSid());
+            studentCourseMapper.deleteSCBySid(student.getSid());
         }
     }
 
+    //查询课程学生
     @Cacheable(value = "students")
     public List<StudentDTO> listStudents() {
         return studentMapper.list();

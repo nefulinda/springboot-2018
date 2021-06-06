@@ -20,19 +20,17 @@ public class LaboratoryService {
     @Autowired
     private LabCourseMapper labCourseMapper;
     @Autowired
-    private StudentCourseMapper studentCourseMapper;
-    @Autowired
     private CourseMapper courseMapper;
     @Autowired
     private LaboratoryMapper laboratoryMapper;
-    @Autowired
-    private LaboratoryStudentMapper laboratoryStudentMapper;
+
 
     //实验室初始化
     public void initLaboratory() {
         LabUtils.initLab();
     }
 
+    //预约实验室
     public boolean addLab(LaboratoryDTO lab) {
         Laboratory l = laboratoryMapper.selectById(lab.getLabId());
         if (l != null && l.getNumber() >= lab.getLabNumber()) {
@@ -64,8 +62,7 @@ public class LaboratoryService {
             labCourseMapper.insert(labCourse);
 
             Course c = Course.builder()
-                    .id(labCourse.getId())
-                    .number(lab.getCourseDTO().getCid())
+                    .id(lab.getCourseDTO().getCid())
                     .name(lab.getCourseDTO().getName())
                     .teacherId(lab.getCourseDTO().getTeacherDTO().getTid())
                     .build();
@@ -75,24 +72,28 @@ public class LaboratoryService {
         return false;
     }
 
+    //取消预约
     public void delteLab(LaboratoryDTO lab) {
 
         LabCourse l = labCourseMapper.selectById(lab.getLid());
         if (l != null) {
             labCourseMapper.deleteById(lab.getLid());
-            courseMapper.deleteById(l.getId());
+            courseMapper.deleteById(lab.getCourseDTO().getCid());
             LabUtils.initLab(lab.getBeginWeek().intValue(), lab.getEndWeek().intValue(),
                     lab.getBeginDay().intValue(), lab.getBeginDay().intValue(),
                     lab.getBeginClassHour().intValue(), lab.getEndClassHour().intValue());
         }
     }
 
-    public LabCourse selectLab(long lid) {
 
-        return null;
+    //查询单个实验室
+    public Laboratory selectLab(Laboratory laboratory) {
+
+        return laboratoryMapper.selectById(laboratory.getId());
     }
 
+    //查询预约实验室的记录
     public List<LabCourse> getAllLab() {
-        return null;
+        return labCourseMapper.listCourse();
     }
 }

@@ -2,6 +2,7 @@ package com.nefu.myspringboot.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.Version;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -24,4 +25,6 @@ public class LabCourse {
 
     @TableField(updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime updateTime;
+    @Version
+    private Version version;
 }

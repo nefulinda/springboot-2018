@@ -16,9 +16,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ApiModel(value = "课程类")
 public class Course {
-    private Long id;
     @ApiModelProperty("课程编号")
-    private Long number;
+    private Long id;
     @ApiModelProperty("课程名称")
     private String name;
     @ApiModelProperty("该课程的老师编号")
