@@ -24,7 +24,7 @@ import java.util.List;
 @Transactional
 @Slf4j
 public class UserService {
-    //@Autowired
+    @Autowired
     private PasswordEncoder encoder;
     @Autowired
     private UserMapper userMapper;

@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @Slf4j
 public class InitService implements InitializingBean {
-   // @Autowired
+    @Autowired
     private PasswordEncoder encoder;
     @Autowired
     private UserMapper userMapper;
