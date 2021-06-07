@@ -1,12 +1,13 @@
 package com.nefu.myspringboot.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@AllArgsConstructor
+@Setter
+@Getter
+@ToString
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class TeacherDTO {
     private Long tid;
     private String number;

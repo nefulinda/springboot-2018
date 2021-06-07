@@ -34,12 +34,7 @@ public class UserService {
     private StudentMapper studentMapper;
     @Autowired
     private StudentCourseMapper studentCourseMapper;
-    @Autowired
-    private CourseMapper courseMapper;
-    @Autowired
-    private LaboratoryMapper laboratoryMapper;
-    @Autowired
-    private LaboratoryStudentMapper laboratoryStudentMapper;
+
 
     //修改权限
     public void updateRole(User u) {
@@ -104,7 +99,7 @@ public class UserService {
     }
 
     //修改老师信息
-    public boolean updateTeacher(TeacherDTO teacher) {
+    public void updateTeacher(TeacherDTO teacher) {
         Teacher t = teacherMapper.selectById(teacher.getTid());
         User u = userMapper.selectById(teacher.getTid());
         if (t != null && u != null) {
@@ -112,9 +107,7 @@ public class UserService {
             t.setPost(teacher.getPost());
             u.setName(teacher.getName());
             u.setNumber(teacher.getNumber());
-            return true;
-        } else {
-            return false;
+
         }
     }
 
@@ -162,7 +155,7 @@ public class UserService {
     }
 
     //修改学生信息
-    public boolean updateStudent(StudentDTO student) {
+    public void updateStudent(StudentDTO student) {
         Student s = studentMapper.selectById(student.getSid());
         User u = userMapper.selectById(student.getSid());
         if (s != null && u != null) {
@@ -170,9 +163,7 @@ public class UserService {
             s.setCollege(student.getCollege());
             u.setName(student.getName());
             u.setNumber(student.getNumber());
-            return true;
-        } else
-            return false;
+        }
 
     }
 

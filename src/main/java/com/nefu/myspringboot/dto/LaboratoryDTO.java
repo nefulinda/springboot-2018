@@ -1,15 +1,16 @@
 package com.nefu.myspringboot.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 
-@Data
+@Setter
+@Getter
+@ToString
 @NoArgsConstructor
+@Builder
 @AllArgsConstructor
 public class LaboratoryDTO {
     private Long lid;

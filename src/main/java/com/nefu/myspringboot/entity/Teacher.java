@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
+
 @ApiModel(value = "教师类")
 public class Teacher {
     private Long id;
@@ -28,4 +29,9 @@ public class Teacher {
     @TableField(updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime updateTime;
 
+//    public Teacher(Long id, String post,String college){
+//        setId(id);
+//        setPost(post);
+//        setCollege(college);
+//    }
 }

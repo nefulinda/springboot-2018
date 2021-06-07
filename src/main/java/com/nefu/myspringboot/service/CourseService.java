@@ -6,9 +6,13 @@ import com.nefu.myspringboot.mapper.CourseMapper;
 import com.nefu.myspringboot.mapper.StudentMapper;
 import com.nefu.myspringboot.mapper.TeacherMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
+@Transactional
 public class CourseService {
     @Autowired
     private CourseMapper courseMapper;
@@ -16,6 +20,12 @@ public class CourseService {
     private StudentMapper studentMapper;
     @Autowired
     private TeacherMapper teacherMapper;
+
+    public void addCourse(Course course, long uid) {
+        course.setId(null);
+        course.setTeacherId(uid);
+        courseMapper.insert(course);
+    }
 
     //查询预约有的课程
     public List<Course> getAllCourses() {

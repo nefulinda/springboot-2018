@@ -15,16 +15,16 @@ public class LabUtils {
         }
     }
 
-    public static void initLab(int  beginWeek, int endWeek,
-                               int beginDay, int endDay,
-                               int beginClassHour,
-                               int endClassHour) {
-        for (int i = beginWeek; i <= endWeek; i++) {
-            for (int j = beginDay; j <= endDay; j++) {
-                for (int k = beginClassHour; k <= endClassHour; k++) {
-                    labList[i][j][k] = 0;
-                }
-            }
-        }
-    }
+//    public static void initLab(int  beginWeek, int endWeek,
+//                               int beginDay, int endDay,
+//                               int beginClassHour,
+//                               int endClassHour) {
+//        for (int i = beginWeek; i <= endWeek; i++) {
+//            for (int j = beginDay; j <= endDay; j++) {
+//                for (int k = beginClassHour; k <= endClassHour; k++) {
+//                    labList[i][j][k] = 0;
+//                }
+//            }
+//        }
+//    }
 }

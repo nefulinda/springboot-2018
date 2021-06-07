@@ -1,5 +1,6 @@
 package com.nefu.myspringboot.service;
 
+import com.nefu.myspringboot.common.Hour;
 import com.nefu.myspringboot.dto.LaboratoryDTO;
 import com.nefu.myspringboot.entity.Course;
 import com.nefu.myspringboot.entity.LabCourse;
@@ -36,26 +37,45 @@ public class LaboratoryService {
     public boolean addLab(LaboratoryDTO lab) {
         Laboratory l = laboratoryMapper.selectById(lab.getLabId());
         if (l != null) {
-
             for (int m = 0; m < lab.getCourses().size(); m++) {
-
                 //如果该段时间内的实验室被预约了 则终止
-                for (int i = lab.getCourses().get(0).getWeek().intValue(); i <= lab.getCourses().get(1).getWeek().intValue(); i++) {
-                    for (int j = lab.getCourses().get(0).getDay().intValue(); j <= lab.getCourses().get(1).getDay().intValue(); j++) {
-                        for (int k = lab.getCourses().get(0).getClassHour().intValue(); k <= lab.getCourses().get(1).getClassHour().intValue(); k++) {
-                            if (LabUtils.labList[i][j][k] == 1) {
+                for (int i = 1; i <= Hour.WEEK; i++) {
+                    for (int j = 1; j <= Hour.DAY; j++) {
+                        for (int k = 1; k <= Hour.SECTION; k++) {
+                            if (lab.getCourses().get(m).getWeek().intValue() == i
+                                    && lab.getCourses().get(m).getDay().intValue() == j
+                                    && lab.getCourses().get(m).getClassHour().intValue() == j
+                                    && LabUtils.labList[i][j][k] == 1) {
                                 return false;
                             }
                         }
                     }
                 }
-                for (int i = lab.getCourses().get(0).getWeek().intValue(); i <= lab.getCourses().get(1).getWeek().intValue(); i++) {
-                    for (int j = lab.getCourses().get(0).getDay().intValue(); j <= lab.getCourses().get(1).getDay().intValue(); j++) {
-                        for (int k = lab.getCourses().get(0).getClassHour().intValue(); k <= lab.getCourses().get(1).getClassHour().intValue(); k++) {
-                            LabUtils.labList[i][j][k] = 1;
+                for (int i = 1; i <= Hour.WEEK; i++) {
+                    for (int j = 1; j <= Hour.DAY; j++) {
+                        for (int k = 1; k <= Hour.SECTION; k++) {
+                            if (lab.getCourses().get(m).getWeek().intValue() == i
+                                    && lab.getCourses().get(m).getDay().intValue() == j
+                                    && lab.getCourses().get(m).getClassHour().intValue() == j
+                                    && LabUtils.labList[i][j][k] == 0) {
+                                LabUtils.labList[i][j][k] = 1;
+                                lab.getCourses().get(m).setState(true);
+                            }
                         }
                     }
                 }
+                LabCourse labCourse = LabCourse.builder()
+                        .labId(lab.getLabId())
+                        .id(lab.getLid())
+                        .cid(lab.getCourses().get(0).getCid())
+                        .build();
+                labCourseMapper.insert(labCourse);
+                Course c = Course.builder()
+                        .id(lab.getCourses().get(m).getCid())
+                        .name(lab.getCourses().get(m).getName())
+                        .teacherId(lab.getCourses().get(m).getTeacher().getId())
+                        .build();
+                courseMapper.insert(c);
             }
 //            //预约成功 实验室与课程建立关系
 //            LabCourse labCourse = LabCourse.builder()
@@ -64,13 +84,13 @@ public class LaboratoryService {
 //                    .cid(lab.getCourses().get(0).getCid())
 //                    .build();
 //            labCourseMapper.insert(labCourse);
-
-            Course c = Course.builder()
-                    .id(lab.getCourses().get(0).getCid())
-                    .name(lab.getCourses().get(0).getName())
-                    .teacherId(lab.getCourses().get(0).getTeacherDTO().getTid())
-                    .build();
-            courseMapper.insert(c);
+//
+//            Course c = Course.builder()
+//                    .id(lab.getCourses().get(0).getCid())
+//                    .name(lab.getCourses().get(0).getName())
+//                    .teacherId(lab.getCourses().get(0).getTeacherDTO().getTid())
+//                    .build();
+//            courseMapper.insert(c);
             return true;
         }
 
@@ -117,20 +137,29 @@ public class LaboratoryService {
 
         LabCourse l = labCourseMapper.selectById(lab.getLid());
         if (l != null) {
+
+            labCourseMapper.deleteById(lab.getLid());
             for (int m = 0; m < lab.getCourses().size(); m++) {
-                labCourseMapper.deleteById(lab.getLid());
-                courseMapper.deleteById(lab.getCourses().get(0).getCid());
+                courseMapper.deleteById(lab.getCourses().get(m).getCid());
+                for (int i = 1; i <= Hour.WEEK; i++) {
+                    for (int j = 1; j <= Hour.DAY; j++) {
+                        for (int k = 1; k <= Hour.SECTION; k++) {
+                            if (lab.getCourses().get(m).getWeek().intValue() == i
+                                    && lab.getCourses().get(m).getDay().intValue() == j
+                                    && lab.getCourses().get(m).getClassHour().intValue() == j
+                            ) {
+                                LabUtils.labList[i][j][k] = 0;
+                                lab.getCourses().get(m).setState(false);
+                            }
+                        }
+                    }
+                }
             }
-            LabUtils.initLab(lab.getCourses().get(0).getWeek().intValue(), lab.getCourses().get(1).getWeek().intValue(),
-                    lab.getCourses().get(0).getDay().intValue(), lab.getCourses().get(0).getDay().intValue(),
-                    lab.getCourses().get(0).getClassHour().intValue(), lab.getCourses().get(0).getClassHour().intValue());
         }
     }
 
-
     //查询单个实验室
     public Laboratory selectLab(Laboratory laboratory) {
-
         return laboratoryMapper.selectById(laboratory.getId());
     }
 

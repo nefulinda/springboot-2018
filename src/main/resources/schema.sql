@@ -15,7 +15,6 @@ create table if not exists user
 create table if not exists teacher
 (
     id          bigint(19) not null primary key,
-    name        varchar(12),
     post        varchar(32),
     college     varchar(45),
     create_time datetime   not null default current_timestamp,
@@ -49,7 +48,7 @@ create table if not exists laboratory
 );
 create table if not exists lab_course
 (
-    id          bigint(19)  not null primary key,
+    id          bigint(19)  not null ,
     lab_id       bigint(19) not null,
     cid  bigint(19)  not null,
     create_time datetime    not null default current_timestamp,

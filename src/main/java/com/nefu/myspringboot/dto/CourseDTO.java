@@ -1,21 +1,25 @@
 package com.nefu.myspringboot.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.nefu.myspringboot.entity.Teacher;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Setter
+@Getter
+@ToString
 @NoArgsConstructor
+@Builder
 @AllArgsConstructor
 public class CourseDTO {
     private Long cid;
+    //课程名
     private String name;
     private Integer week;
     private Integer day;
     private Integer  classHour;
-    private TeacherDTO teacherDTO;
-   // private List<StudentDTO> studentDTOS;
+    private Teacher teacher;
+    private boolean state = false;
+   private List<StudentDTO> students;
 }
