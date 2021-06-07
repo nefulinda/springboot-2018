@@ -7,21 +7,27 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.nefu.myspringboot.common.Hour;
 import com.nefu.myspringboot.dto.CourseDTO;
 import com.nefu.myspringboot.dto.LaboratoryDTO;
+import com.nefu.myspringboot.dto.StudentDTO;
+import com.nefu.myspringboot.dto.TeacherDTO;
 import com.nefu.myspringboot.entity.Course;
 import com.nefu.myspringboot.entity.LabCourse;
 import com.nefu.myspringboot.entity.Teacher;
 import com.nefu.myspringboot.entity.User;
 import com.nefu.myspringboot.mapper.*;
+import com.nefu.myspringboot.service.UserService;
 import com.nefu.myspringboot.utils.LabUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
-
+@Slf4j
 @SpringBootTest
 class MyspringbootApplicationTests {
+    @Autowired
+    private UserService userService;
     @Autowired
     private LabCourseMapper labCourseMapper;
     @Autowired
@@ -194,6 +200,53 @@ class MyspringbootApplicationTests {
                 }
             }
         }
+    }
+    @Test
+    public void test2() {
+        TeacherDTO teacherDTO = TeacherDTO.builder()
+                .name("BO")
+                .number("1002")
+                .post("讲师")
+                .college("信息院")
+                .build();
+        userService.addTeacher(teacherDTO);
+    }
+    @Test
+    public void test3() {
+        long cid = 1384896304762638337L;
+        StudentDTO s1 = StudentDTO.builder()
+                .name("Jack")
+                .clazz("软件1班")
+                .number("204600010001")
+                .build();
+        StudentDTO s2 = StudentDTO.builder()
+                .name("Tom")
+                .clazz("软件1班")
+                .number("204600010002")
+                .build();
+        StudentDTO s3 = StudentDTO.builder()
+                .name("Peter")
+                .clazz("软件1班")
+                .number("204600010003")
+                .build();
+        StudentDTO s4 = StudentDTO.builder()
+                .name("Mean")
+                .clazz("软件1班")
+                .number("204600010004")
+                .build();
+        userService.addStudents(List.of(s1, s2, s3, s4), cid);
+    }
+    @Test
+    public void test4() {
+
+
+        List<StudentDTO> studentDTOS = userService.listStudents();
+        System.out.println(studentDTOS.size());
+        System.out.println(studentDTOS.getClass().getName());
+        for (StudentDTO s : studentDTOS) {
+            System.out.println(s.getName());
+        }
+
     }
 }
 
