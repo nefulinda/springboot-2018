@@ -13,6 +13,9 @@ import java.util.List;
 public class CourseDTO {
     private Long cid;
     private String name;
+    private Integer week;
+    private Integer day;
+    private Integer  classHour;
     private TeacherDTO teacherDTO;
-    private List<StudentDTO> studentDTOS;
+   // private List<StudentDTO> studentDTOS;
 }
