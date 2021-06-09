@@ -89,7 +89,7 @@ class MyspringbootApplicationTests {
     //分页查询
     @Test
     void selectPage() {
-        Page<User> page = new Page(1, 12);
+        Page<User> page = new Page(2, 2);
         Page<User> userPage = userMapper.selectPage(page, null);
         //返回对象得到分页所有数据
         long pages = userPage.getPages();//总页数
@@ -98,6 +98,14 @@ class MyspringbootApplicationTests {
         long total = userPage.getTotal();//总记录数
         boolean hasNext = userPage.hasNext();//下一页
         boolean hasPrevious = userPage.hasPrevious();//上一页
+        System.out.println(pages);
+        System.out.println(current);
+        for (User user : records) {
+            System.out.println(user);
+        }
+        System.out.println(total);
+        System.out.println(hasNext);
+        System.out.println(hasPrevious);
 
     }
     //DI注入数据源

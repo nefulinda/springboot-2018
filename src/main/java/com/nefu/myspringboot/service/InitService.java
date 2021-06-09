@@ -28,7 +28,7 @@ public class InitService implements InitializingBean {
         if (count == 0) {
             User user = User.builder()
                     .name("admin")
-                    .number("2000013146")
+                    .number("1001")
                     .password(encoder.encode("admin"))
                     .role(9)
                     .build();
