@@ -36,24 +36,23 @@ create table if not exists student
 );
 create table if not exists laboratory
 (
-    id             bigint(19) not null primary key,
-    name           varchar(32),
-    number         bigint(19)          default null,
-    laboratory_msg int                 default 0,
-    update_time    datetime   not null default current_timestamp on update current_timestamp,
-    version        int                 default 0,
-    index (id),
-    index (laboratory_msg)
+    id          bigint(19) not null primary key,
+    name        varchar(32),
+    number      bigint(19)          default null,
+    create_time datetime   not null default current_timestamp,
+    update_time datetime   not null default current_timestamp on update current_timestamp,
+    version     int                 default 0,
+    index (id)
 
 );
 create table if not exists lab_course
 (
-    id          bigint(19)  not null ,
-    lab_id       bigint(19) not null,
-    cid  bigint(19)  not null,
-    create_time datetime    not null default current_timestamp,
-    update_time datetime    not null default current_timestamp on update current_timestamp,
-    version     int                  default 0,
+    id          bigint(19) not null,
+    lab_id      bigint(19) not null,
+    cid         bigint(19) not null,
+    create_time datetime   not null default current_timestamp,
+    update_time datetime   not null default current_timestamp on update current_timestamp,
+    version     int                 default 0,
     index (id),
     index (lab_id)
 );
@@ -91,4 +90,14 @@ create table if not exists student_course
     version     int                 default 0,
     index (course_id),
     index (student_id)
+);
+create table if not exists notice
+(
+    id          bigint(19)  not null primary key,
+    title       varchar(45) not null,
+    context     varchar(2000),
+    create_time datetime    not null default current_timestamp,
+    update_time datetime    not null default current_timestamp on update current_timestamp,
+    version     int                  default 0,
+    index (id)
 );

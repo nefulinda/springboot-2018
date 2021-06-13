@@ -34,7 +34,10 @@ public class UserService {
     private StudentMapper studentMapper;
     @Autowired
     private StudentCourseMapper studentCourseMapper;
-
+    @Autowired
+    private NoticeMapper noticeMapper;
+    @Autowired
+    private LaboratoryMapper laboratoryMapper;
 
     //修改权限
     public void updateRole(User u) {
@@ -81,11 +84,12 @@ public class UserService {
     }
 
     //删除老师
-    public void deleteTeacher(TeacherDTO teacher) {
-        if (teacher != null) {
-            teacherMapper.deleteById(teacher.getTid());
-            userMapper.deleteById(teacher.getTid());
-        }
+    public void deleteTeacher(String number) {
+        QueryWrapper<User> teacherQueryWrapper = new QueryWrapper<>();
+        teacherQueryWrapper.eq("number", number);
+        User user = userMapper.selectOne(teacherQueryWrapper);
+        teacherMapper.deleteById(user.getId());
+        userMapper.delete(teacherQueryWrapper);
     }
 
     /*
@@ -176,7 +180,6 @@ public class UserService {
         }
     }
 
-    //查询课程学生
     @Cacheable(value = "students")
     public List<StudentDTO> listStudents() {
         return studentMapper.list();

@@ -3,7 +3,9 @@ package com.nefu.myspringboot.controller;
 
 import com.nefu.myspringboot.common.Role;
 import com.nefu.myspringboot.entity.Course;
+import com.nefu.myspringboot.entity.Laboratory;
 import com.nefu.myspringboot.service.CourseService;
+import com.nefu.myspringboot.service.LaboratoryService;
 import com.nefu.myspringboot.service.UserService;
 import com.nefu.myspringboot.vo.ResultVO;
 import io.swagger.annotations.Api;
@@ -24,6 +26,8 @@ public class CommonController {
     private CourseService courseService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private LaboratoryService laboratoryService;
 
     @ApiOperation("登录后首页信息，加载用户的全部课程")
     @GetMapping("home")
@@ -38,6 +42,12 @@ public class CommonController {
     public ResultVO patchPassword(@RequestBody Map<String, String> map, @RequestAttribute("uid") long uid) {
         userService.updatePassword(uid, map.get("password"));
         return ResultVO.success(Map.of());
+    }
+    @ApiOperation("获取全部实验室列表")
+    @GetMapping("labs")
+    public ResultVO getLab ()  {
+       List<Laboratory> labs  = laboratoryService.getListLab();
+       return ResultVO.success(Map.of("labs",labs));
     }
 
 }

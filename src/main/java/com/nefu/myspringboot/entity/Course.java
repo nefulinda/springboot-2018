@@ -2,19 +2,20 @@ package com.nefu.myspringboot.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
+import java.time.LocalDateTime;
+
 import com.baomidou.mybatisplus.annotation.Version;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-import java.time.LocalDateTime;
 @Setter
 @Getter
 @ToString
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-@ApiModel(value = "课程类")
+@TableName("course")
 public class Course {
     @ApiModelProperty("课程编号")
     private Long id;

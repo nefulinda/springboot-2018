@@ -1,11 +1,13 @@
 package com.nefu.myspringboot.service;
 
 import com.nefu.myspringboot.dto.CourseDTO;
+import com.nefu.myspringboot.dto.StudentDTO;
 import com.nefu.myspringboot.entity.Course;
 import com.nefu.myspringboot.mapper.CourseMapper;
 import com.nefu.myspringboot.mapper.StudentMapper;
 import com.nefu.myspringboot.mapper.TeacherMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,4 +46,7 @@ public class CourseService {
     public Course getCourse(long tid, long cid) {
         return courseMapper.getCourse(tid, cid);
     }
+    //查询课程学生
+
+
 }

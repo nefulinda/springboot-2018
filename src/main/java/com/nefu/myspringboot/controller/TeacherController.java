@@ -46,4 +46,6 @@ public class TeacherController {
         userService.addStudents(courseDTO.getStudents(), courseDTO.getCid());
         return ResultVO.success(Map.of());
     }
+
+
 }

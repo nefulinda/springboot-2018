@@ -1,5 +1,6 @@
 package com.nefu.myspringboot.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.nefu.myspringboot.common.Hour;
 import com.nefu.myspringboot.dto.LaboratoryDTO;
 import com.nefu.myspringboot.entity.Course;
@@ -34,7 +35,7 @@ public class LaboratoryService {
     }
 
     //预约实验室
-    public boolean addLab(LaboratoryDTO lab) {
+    public boolean addLabDTO(LaboratoryDTO lab) {
         Laboratory l = laboratoryMapper.selectById(lab.getLabId());
         if (l != null) {
             for (int m = 0; m < lab.getCourses().size(); m++) {
@@ -133,7 +134,7 @@ public class LaboratoryService {
     }
 
     //取消预约
-    public void delteLab(LaboratoryDTO lab) {
+    public void deleteLabDTO(LaboratoryDTO lab) {
 
         LabCourse l = labCourseMapper.selectById(lab.getLid());
         if (l != null) {
@@ -166,5 +167,19 @@ public class LaboratoryService {
     //查询预约实验室的记录
     public List<LabCourse> getAllLab() {
         return labCourseMapper.listCourse();
+    }
+    //获取实验室
+    public List<Laboratory>  getListLab(){
+        return laboratoryMapper.listLab();
+    }
+    //增加实验室
+    public void addLab(Laboratory laboratory){
+        laboratoryMapper.insert(laboratory);
+    }
+    //删除实验室
+    public void deleteLab(String name){
+        QueryWrapper<Laboratory> l= new QueryWrapper<>();
+        l.eq("name",name);
+        laboratoryMapper.delete(l);
     }
 }

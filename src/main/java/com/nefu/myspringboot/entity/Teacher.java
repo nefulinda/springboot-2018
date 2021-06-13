@@ -2,12 +2,11 @@ package com.nefu.myspringboot.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.Version;
-import io.swagger.annotations.ApiModel;
+import com.baomidou.mybatisplus.annotation.TableName;
+import java.time.LocalDateTime;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -15,8 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-
-@ApiModel(value = "教师类")
+@TableName("teacher")
 public class Teacher {
     private Long id;
     @ApiModelProperty("职位")
@@ -28,10 +26,4 @@ public class Teacher {
 
     @TableField(updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime updateTime;
-
-//    public Teacher(Long id, String post,String college){
-//        setId(id);
-//        setPost(post);
-//        setCollege(college);
-//    }
 }

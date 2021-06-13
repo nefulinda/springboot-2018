@@ -3,10 +3,10 @@ package com.nefu.myspringboot.entity;
 import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import java.time.LocalDateTime;
+
 import com.baomidou.mybatisplus.annotation.Version;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Setter
 @Getter
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
-@TableName(value = "student_course")
+@TableName("student_course")
 public class StudentCourse {
     private Long id;
     private Long studentId;
