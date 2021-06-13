@@ -2,7 +2,11 @@ package com.nefu.myspringboot.controller;
 
 
 import com.nefu.myspringboot.common.EncryptComponent;
+import com.nefu.myspringboot.entity.Student;
+import com.nefu.myspringboot.entity.Teacher;
 import com.nefu.myspringboot.entity.User;
+import com.nefu.myspringboot.mapper.StudentMapper;
+import com.nefu.myspringboot.mapper.TeacherMapper;
 import com.nefu.myspringboot.service.UserService;
 import com.nefu.myspringboot.vo.ResultVO;
 import io.swagger.annotations.Api;
@@ -24,10 +28,14 @@ public class LoginController {
     private PasswordEncoder encoder;
     @Autowired
     private UserService userService;
+    @Autowired
+    private TeacherMapper teacherMapper;
+    @Autowired
+    private StudentMapper studentMapper;
 
     @GetMapping("welcome")
     public ResultVO welcome() {
-        return ResultVO.success(Map.of("messages","此请求无需登录", "students", userService.listStudents()));
+        return ResultVO.success(Map.of("messages", "此请求无需登录", "students", userService.listStudents()));
     }
 
     @ApiOperation(value = "登录")
@@ -37,8 +45,13 @@ public class LoginController {
         if (u == null || !encoder.matches(user.getPassword(), u.getPassword())) {
             return ResultVO.error(401, "用户名密码错误");
         }
-        String token = encryptComponent.encrypt(Map.of("uid", u.getId(), "role", u.getRole()));
+        Teacher t = teacherMapper.selectById(u.getId());
+        String token = encryptComponent.encrypt(Map.of("uid", u.getId()));
         response.addHeader("token", token);
-        return ResultVO.success(Map.of());
+        if (t != null) {
+            return ResultVO.success(Map.of("tid",u.getNumber(),"role", u.getRole().toString()));
+        }
+        return ResultVO.success(Map.of("role", u.getRole().toString()));
     }
+
 }

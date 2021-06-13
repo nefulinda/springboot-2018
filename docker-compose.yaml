@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+  web-nefulab:
+    image: openjdk:11
+    build: .
+    ports:
+    - 8080:8080
+    volumes:
+    - ./:/home/
+    command: java -jar /home/myspringboot-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod
+    environment:
+      - dhost=nefulab-mysql:3306
+      - username=root
+      - password=root
+    depends_on:
+      - nefulab-mysql
+
+  nefulab-mysql:
+    image: mysql:8
+    ports:
+    - 3306
+    volumes:
+    - ./mysql/data/:/var/lib/mysql/
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_ROOT_PASSWORD: root

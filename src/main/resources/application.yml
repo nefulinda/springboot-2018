@@ -1,6 +1,6 @@
 spring:
   application:
-    name: springboot-2018
+    name: myspringboot
   datasource:
     url: 'jdbc:mysql://localhost:3306/webtest?
           createDatabaseIfNotExist=true
@@ -9,7 +9,9 @@ spring:
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     initialization-mode: always
-
+  cache:
+    caffeine: # 在代码注入缓存管理器，此处配置无效
+      spec: expireAfterWrite=1d, maximumSize=200
   jackson:
     default-property-inclusion: non_null
     date-format: yyyy-MM-dd HH:mm:ss
@@ -21,7 +23,28 @@ logging:
   level:
     root: warn
     com:
-      example: debug
+      nefu: debug
+  pattern:
+    console: '%-5level %C.%M[%line] - %msg%n'
+server:
+  port: 8080
+---
+spring:
+  profiles: prod
+  datasource:
+    url: jdbc:mysql://${dhost}/webtest?createDatabaseIfNotExist=true&serverTimezone=Asia/Shanghai
+    username: ${username}
+    password: ${password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jackson:
+      default-property-inclusion: non_null
+      date-format: yyyy-MM-dd HH:mm:ss
+      time-zone: GMT+8
+logging:
+  level:
+    root: warn
+    com:
+      nefu: debug
   pattern:
     console: '%-5level %C.%M[%line] - %msg%n'
 server:
