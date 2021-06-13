@@ -2,8 +2,10 @@ package com.nefu.myspringboot.controller;
 
 
 import com.nefu.myspringboot.dto.CourseDTO;
+import com.nefu.myspringboot.dto.LaboratoryDTO;
 import com.nefu.myspringboot.entity.Course;
 import com.nefu.myspringboot.service.CourseService;
+import com.nefu.myspringboot.service.LaboratoryService;
 import com.nefu.myspringboot.service.UserService;
 import com.nefu.myspringboot.vo.ResultVO;
 import io.swagger.annotations.Api;
@@ -21,6 +23,8 @@ public class TeacherController {
     private CourseService courseService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private LaboratoryService laboratoryService;
 
     @ApiOperation("添加课程，并返回当前教师全部课程")
     @PostMapping("courses")
@@ -46,6 +50,17 @@ public class TeacherController {
         userService.addStudents(courseDTO.getStudents(), courseDTO.getCid());
         return ResultVO.success(Map.of());
     }
-
+    @ApiOperation("预约实验室")
+    @PostMapping("orderlab")
+    public ResultVO orderLab(@RequestBody LaboratoryDTO l) {
+        laboratoryService.addLabDTO(l);
+        return ResultVO.success(Map.of("orderlab",l));
+    }
+    @ApiOperation("取消预约实验室")
+    @PostMapping("unorderlab")
+    public ResultVO unorderLab(@RequestBody LaboratoryDTO l) {
+        laboratoryService.deleteLabDTO(l);
+        return ResultVO.success(Map.of("orderlab",l));
+    }
 
 }

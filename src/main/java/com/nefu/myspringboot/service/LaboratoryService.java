@@ -182,4 +182,6 @@ public class LaboratoryService {
         l.eq("name",name);
         laboratoryMapper.delete(l);
     }
+
+
 }

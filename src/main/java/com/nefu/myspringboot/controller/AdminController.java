@@ -93,6 +93,16 @@ public class AdminController {
     public ResultVO getTeacherCourse(@RequestAttribute Long tid) {
         return ResultVO.success(Map.of("deletelabs",courseServicer.listCoursesByTid(tid)));
     }
-
-
+    @ApiOperation("预约实验室")
+    @PostMapping("orderlab")
+    public ResultVO orderLab(@RequestBody LaboratoryDTO l) {
+        laboratoryService.addLabDTO(l);
+        return ResultVO.success(Map.of("orderlab",l));
+    }
+    @ApiOperation("取消预约实验室")
+    @PostMapping("unorderlab")
+    public ResultVO unorderLab(@RequestBody LaboratoryDTO l) {
+        laboratoryService.deleteLabDTO(l);
+        return ResultVO.success(Map.of("orderlab",l));
+    }
 }
