@@ -12,5 +12,7 @@ public interface UserMapper extends BaseMapper<User> {
     default User getByNumber(String number) {
         return selectOne(new LambdaQueryWrapper<User>().eq(User::getNumber, number));
     }
-  //  User updateRole(User  user);
+
+    //void update(User u);
+    //  User updateRole(User  user);
 }

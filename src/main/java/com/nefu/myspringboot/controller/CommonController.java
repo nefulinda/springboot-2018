@@ -2,6 +2,7 @@ package com.nefu.myspringboot.controller;
 
 
 import com.nefu.myspringboot.common.Role;
+import com.nefu.myspringboot.dto.LaboratoryDTO;
 import com.nefu.myspringboot.entity.Course;
 import com.nefu.myspringboot.entity.Laboratory;
 import com.nefu.myspringboot.service.CourseService;
@@ -43,10 +44,11 @@ public class CommonController {
         userService.updatePassword(uid, map.get("password"));
         return ResultVO.success(Map.of());
     }
+
     @ApiOperation("获取全部实验室列表")
     @GetMapping("labs")
     public ResultVO getLab ()  {
-       List<Laboratory> labs  = laboratoryService.getListLab();
+       List<LaboratoryDTO> labs  = laboratoryService.getListLab();
        return ResultVO.success(Map.of("labs",labs));
     }
 

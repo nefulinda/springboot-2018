@@ -1,9 +1,9 @@
 create table if not exists user
 (
     id          bigint(19)  not null primary key,
-    name        varchar(32)  not null,
+    name        varchar(32) not null,
     number      varchar(32) not null,
-    password    varchar(32) not null,
+    password    varchar(60) not null,
     role        int         not null default 1,
     create_time datetime    not null default current_timestamp,
     update_time datetime    not null default current_timestamp on update current_timestamp,
@@ -36,13 +36,12 @@ create table if not exists student
 );
 create table if not exists laboratory
 (
-    id          bigint(19) not null primary key,
-    name        varchar(32),
-    number      int          default null,
-    create_time datetime   not null default current_timestamp,
-    update_time datetime   not null default current_timestamp on update current_timestamp,
-    version     int                 default 0,
-    index (id)
+    number          int      not null primary key,
+    computer_number int               default null,
+    create_time     datetime not null default current_timestamp,
+    update_time     datetime not null default current_timestamp on update current_timestamp,
+    version         int               default 0,
+    index (number)
 
 );
 create table if not exists lab_course
@@ -50,11 +49,16 @@ create table if not exists lab_course
     id          bigint(19) not null,
     lab_id      bigint(19) not null,
     cid         bigint(19) not null,
+    week        varchar(3),
+    day         varchar(3),
+    section       varchar(3),
+    status      boolean             default false,
     create_time datetime   not null default current_timestamp,
     update_time datetime   not null default current_timestamp on update current_timestamp,
     version     int                 default 0,
     index (id),
-    index (lab_id)
+    index (lab_id),
+    index (cid)
 );
 create table if not exists laboratory_student
 (

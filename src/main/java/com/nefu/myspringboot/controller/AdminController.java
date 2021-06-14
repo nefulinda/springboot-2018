@@ -76,7 +76,7 @@ public class AdminController {
     @PostMapping("addlabs")
     public ResultVO addLab(@RequestBody Laboratory laboratory) {
         laboratoryService.addLab(laboratory);
-        return ResultVO.success(Map.of("addlabs",laboratoryService.selectLab(laboratory)));
+        return ResultVO.success(Map.of("addlabs",laboratory));
     }
 
     @ApiOperation("删除实验室")
@@ -88,12 +88,12 @@ public class AdminController {
     @ApiOperation("获取全部课程")
     @GetMapping("getallcourses")
     public ResultVO getCourses() {
-        return ResultVO.success(Map.of("deletelabs",courseServicer.getAllCourses()));
+        return ResultVO.success(Map.of("allCourse",courseServicer.getAllCourses()));
     }
     @ApiOperation("通过课程号获取课程")
     @GetMapping("getidcourse")
     public ResultVO getCourse(@RequestAttribute("sid") Long sid) {
-        return ResultVO.success(Map.of("deletelabs",courseServicer.listCoursesBySid(sid)));
+        return ResultVO.success(Map.of("getCourseId",courseServicer.listCoursesBySid(sid)));
     }
     @ApiOperation("获取指定老师的课程")
     @GetMapping("gettidcourse")

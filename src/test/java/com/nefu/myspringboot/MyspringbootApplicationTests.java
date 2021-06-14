@@ -9,10 +9,7 @@ import com.nefu.myspringboot.dto.CourseDTO;
 import com.nefu.myspringboot.dto.LaboratoryDTO;
 import com.nefu.myspringboot.dto.StudentDTO;
 import com.nefu.myspringboot.dto.TeacherDTO;
-import com.nefu.myspringboot.entity.Course;
-import com.nefu.myspringboot.entity.LabCourse;
-import com.nefu.myspringboot.entity.Teacher;
-import com.nefu.myspringboot.entity.User;
+import com.nefu.myspringboot.entity.*;
 import com.nefu.myspringboot.mapper.*;
 import com.nefu.myspringboot.service.UserService;
 import com.nefu.myspringboot.utils.LabUtils;
@@ -23,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
+
 @Slf4j
 @SpringBootTest
 class MyspringbootApplicationTests {
@@ -42,6 +40,8 @@ class MyspringbootApplicationTests {
     private StudentCourseMapper studentCourseMapper;
     @Autowired
     private CourseMapper courseMapper;
+    @Autowired
+    private LaboratoryMapper laboratoryMapper;
 
 
     @Test
@@ -128,87 +128,7 @@ class MyspringbootApplicationTests {
 //        connection.close();
 //    }
 
-    @Test
-    void addLab() {
 
-
-        Teacher t1 = Teacher.builder().id(4548469L).post("讲师").college("信息").build();
-        CourseDTO c1 = CourseDTO.builder().cid(56446L).name("C语言").teacher(t1).week(7).day(5).classHour(4).build();
-        CourseDTO c2 = CourseDTO.builder().cid(56499L).name("java语言").teacher(t1).week(6).day(5).classHour(4).build();
-        LaboratoryDTO lab = LaboratoryDTO.builder()
-                .labId(922L).lid(45645555555555L).labNumber(60).courses(List.of(c1, c2)).build();
-
-        for (int m = 0; m < lab.getCourses().size(); m++) {
-            //如果该段时间内的实验室被预约了 则终止
-            for (int i = 1; i <= Hour.WEEK; i++) {
-                for (int j = 1; j <= Hour.DAY; j++) {
-                    for (int k = 1; k <= Hour.SECTION; k++) {
-                        if (lab.getCourses().get(m).getWeek().intValue() == i
-                                && lab.getCourses().get(m).getDay().intValue() == j
-                                && lab.getCourses().get(m).getClassHour().intValue() == j
-                                && LabUtils.labList[i][j][k] == 1) {
-                        }
-                    }
-                }
-            }
-            for (int i = 1; i <= Hour.WEEK; i++) {
-                for (int j = 1; j <= Hour.DAY; j++) {
-                    for (int k = 1; k <= Hour.SECTION; k++) {
-                        if (lab.getCourses().get(m).getWeek().intValue() == i
-                                && lab.getCourses().get(m).getDay().intValue() == j
-                                && lab.getCourses().get(m).getClassHour().intValue() == j
-                                && LabUtils.labList[i][j][k] == 0) {
-                            LabUtils.labList[i][j][k] = 1;
-                            lab.getCourses().get(m).setState(true);
-
-                        }
-                    }
-                }
-            }
-            LabCourse labCourse = LabCourse.builder()
-                    .id(lab.getLid())
-                    .labId(lab.getLabId())
-                    .cid(lab.getCourses().get(m).getCid())
-                    .build();
-            labCourseMapper.insert(labCourse);
-            Course c = Course.builder()
-                    .id(lab.getCourses().get(m).getCid())
-                    .name(lab.getCourses().get(m).getName())
-                    .teacherId(lab.getCourses().get(m).getTeacher().getId())
-                    .build();
-            courseMapper.insert(c);
-        }
-
-    }
-
-    @Test
-    void deletelab() {
-        Teacher t1 = Teacher.builder().id(4548469L).post("讲师").college("信息").build();
-        CourseDTO c1 = CourseDTO.builder().cid(56446L).name("C语言").teacher(t1).week(7).day(5).classHour(4).build();
-        CourseDTO c2 = CourseDTO.builder().cid(56499L).name("java语言").teacher(t1).week(6).day(5).classHour(4).build();
-        LaboratoryDTO lab = LaboratoryDTO.builder()
-                .labId(922L).lid(45645555555555L).labNumber(60).courses(List.of(c1, c2)).build();
-
-        for (int m = 0; m < lab.getCourses().size(); m++) {
-
-             labCourseMapper.deleteById(lab.getLid());
-            courseMapper.deleteById(lab.getCourses().get(m).getCid());
-
-            for (int i = 1; i <= Hour.WEEK; i++) {
-                for (int j = 1; j <= Hour.DAY; j++) {
-                    for (int k = 1; k <= Hour.SECTION; k++) {
-                        if (lab.getCourses().get(m).getWeek().intValue() == i
-                                && lab.getCourses().get(m).getDay().intValue() == j
-                                && lab.getCourses().get(m).getClassHour().intValue() == j
-                        ) {
-                            LabUtils.labList[i][j][k] = 0;
-                            lab.getCourses().get(m).setState(false);
-                        }
-                    }
-                }
-            }
-        }
-    }
     @Test
     public void test2() {
         TeacherDTO teacherDTO = TeacherDTO.builder()
@@ -217,9 +137,10 @@ class MyspringbootApplicationTests {
                 .post("讲师")
                 .college("信息院")
                 .build();
-        Teacher t=userService.addTeacher(teacherDTO);
+        Teacher t = userService.addTeacher(teacherDTO);
         System.out.println(t);
     }
+
     @Test
     public void test3() {
         long cid = 1384896304762638337L;
@@ -245,6 +166,7 @@ class MyspringbootApplicationTests {
                 .build();
         userService.addStudents(List.of(s1, s2, s3, s4), cid);
     }
+
     @Test
     public void test4() {
 
@@ -255,6 +177,16 @@ class MyspringbootApplicationTests {
         for (StudentDTO s : studentDTOS) {
             System.out.println(s.getName());
         }
+
+    }
+
+    @Test
+    public void addssLab() {
+        Laboratory l = Laboratory.builder()
+                .number(922L)
+                .computerNumber(60)
+                .build();
+        laboratoryMapper.insert(l);
 
     }
 }

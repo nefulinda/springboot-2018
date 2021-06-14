@@ -97,7 +97,6 @@ public class UserService {
      *
      *
      */
-    @Cacheable(value = "teachers")
     public List<TeacherDTO> teacherList() {
         return teacherMapper.list();
     }
@@ -118,7 +117,6 @@ public class UserService {
     }
 
     //增加学生
-    @CacheEvict(value = "students", allEntries = true)
     public void addStudents(List<StudentDTO> students, long cid) {
         for (StudentDTO sDTO : students) {
             User u = userMapper.getByNumber(sDTO.getNumber());
@@ -182,7 +180,6 @@ public class UserService {
         }
     }
 
-    @Cacheable(value = "students")
     public List<StudentDTO> listStudents() {
         return studentMapper.list();
     }

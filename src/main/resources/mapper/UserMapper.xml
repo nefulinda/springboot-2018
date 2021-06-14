@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nefu.myspringboot.mapper.UserMapper">
 
-    <update id="updateRole" parameterType="com.nefu.myspringboot.entity.User">
-        update user set  user.role=#{role}  where u.id=#{id}
+    <update id="updatepwd" parameterType="com.nefu.myspringboot.entity.User">
+        update user u set  u.password=#{password}  where u.number=#{u.number}
     </update>
 </mapper>

@@ -17,11 +17,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @ApiModel(value = "实验室")
 public class Laboratory {
-    private Long id;
-    @ApiModelProperty("实验室名称")
-    private String name;
+    @ApiModelProperty("实验室编号")
+    private Long number;
     @ApiModelProperty("实验室机器数量")
-    private  Integer number;
+    private  Integer computerNumber;
     @TableField(updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime createTime;
 

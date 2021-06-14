@@ -46,7 +46,7 @@ public class LoginController {
             return ResultVO.error(401, "用户名密码错误");
         }
         Teacher t = teacherMapper.selectById(u.getId());
-        String token = encryptComponent.encrypt(Map.of("uid", u.getId()));
+        String token = encryptComponent.encrypt(Map.of("uid", u.getId(),"role", u.getRole()));
         response.addHeader("token", token);
         if (t != null) {
             return ResultVO.success(Map.of("tid",u.getNumber(),"role", u.getRole().toString()));
