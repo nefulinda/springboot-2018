@@ -104,8 +104,10 @@ public class UserService {
 
     //修改老师信息
     public void updateTeacher(TeacherDTO teacher) {
-        Teacher t = teacherMapper.selectById(teacher.getTid());
-        User u = userMapper.selectById(teacher.getTid());
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("number",teacher.getNumber());
+        User u = userMapper.selectOne(queryWrapper);
+        Teacher t = teacherMapper.selectById(u.getId());
         if (t != null && u != null) {
             t.setCollege(teacher.getCollege());
             t.setPost(teacher.getPost());

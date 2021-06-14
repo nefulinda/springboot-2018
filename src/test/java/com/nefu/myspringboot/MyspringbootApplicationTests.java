@@ -213,11 +213,12 @@ class MyspringbootApplicationTests {
     public void test2() {
         TeacherDTO teacherDTO = TeacherDTO.builder()
                 .name("BO")
-                .number("1002")
+                .number("1006")
                 .post("讲师")
                 .college("信息院")
                 .build();
-        userService.addTeacher(teacherDTO);
+        Teacher t=userService.addTeacher(teacherDTO);
+        System.out.println(t);
     }
     @Test
     public void test3() {

@@ -96,6 +96,6 @@ public class ExceptionController {
 
     @ExceptionHandler(Exception.class)
     public ResultVO handleException(Exception exception) {
-        return ResultVO.error(400, "请求错误");
+        return ResultVO.error(400, exception.getClass().getName());
     }
 }

@@ -26,5 +26,5 @@ public class LabCourse {
     @TableField(updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime updateTime;
     @Version
-    private Version version;
+    private Integer version;
 }

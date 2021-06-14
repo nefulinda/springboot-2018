@@ -14,8 +14,7 @@ spring:
       spec: expireAfterWrite=1d, maximumSize=200
   jackson:
     default-property-inclusion: non_null
-    date-format: yyyy-MM-dd HH:mm:ss
-    time-zone: GMT+8
+
 my:
   secretkey: R28K42ZEJ8LWRHU5
   salt: 636eac2534bcfcb0
@@ -27,7 +26,7 @@ logging:
   pattern:
     console: '%-5level %C.%M[%line] - %msg%n'
 server:
-  port: 8080
+  port: 8081
 ---
 spring:
   profiles: prod
@@ -38,10 +37,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jackson:
       default-property-inclusion: non_null
-      date-format: yyyy-MM-dd HH:mm:ss
-      time-zone: GMT+8
-  redis:
-    host: 114.116.214.145
+
+#  redis:
+#    host: 114.116.214.145
 logging:
   level:
     root: warn

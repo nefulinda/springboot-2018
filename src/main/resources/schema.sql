@@ -1,9 +1,9 @@
 create table if not exists user
 (
     id          bigint(19)  not null primary key,
-    name        varchar(8)  not null,
-    number      varchar(12) not null,
-    password    varchar(65) not null,
+    name        varchar(32)  not null,
+    number      varchar(32) not null,
+    password    varchar(32) not null,
     role        int         not null default 1,
     create_time datetime    not null default current_timestamp,
     update_time datetime    not null default current_timestamp on update current_timestamp,
@@ -15,8 +15,8 @@ create table if not exists user
 create table if not exists teacher
 (
     id          bigint(19) not null primary key,
-    post        varchar(32),
-    college     varchar(45),
+    post        varchar(16),
+    college     varchar(32),
     create_time datetime   not null default current_timestamp,
     update_time datetime   not null default current_timestamp on
         update current_timestamp,
@@ -27,8 +27,8 @@ create table if not exists teacher
 create table if not exists student
 (
     id          bigint(19) not null primary key,
-    clazz       varchar(8),
-    college     varchar(45),
+    clazz       varchar(16),
+    college     varchar(32),
     create_time datetime   not null default current_timestamp,
     update_time datetime   not null default current_timestamp on update current_timestamp,
     unique (id),
@@ -38,7 +38,7 @@ create table if not exists laboratory
 (
     id          bigint(19) not null primary key,
     name        varchar(32),
-    number      bigint(19)          default null,
+    number      int          default null,
     create_time datetime   not null default current_timestamp,
     update_time datetime   not null default current_timestamp on update current_timestamp,
     version     int                 default 0,
@@ -59,7 +59,7 @@ create table if not exists lab_course
 create table if not exists laboratory_student
 (
     id          bigint(19)  not null primary key,
-    name        varchar(45) not null,
+    name        varchar(32) not null,
     student_id  bigint(19)  not null,
     teacher_id  bigint(19)  not null,
     create_time datetime    not null default current_timestamp,
@@ -72,7 +72,7 @@ create table if not exists laboratory_student
 create table if not exists course
 (
     id          bigint(19)  not null primary key,
-    name        varchar(45) not null,
+    name        varchar(32) not null,
     teacher_id  bigint(19)  not null,
     create_time datetime    not null default current_timestamp,
     update_time datetime    not null default current_timestamp on update current_timestamp,

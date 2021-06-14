@@ -78,58 +78,9 @@ public class LaboratoryService {
                         .build();
                 courseMapper.insert(c);
             }
-//            //预约成功 实验室与课程建立关系
-//            LabCourse labCourse = LabCourse.builder()
-//                    .labId(lab.getLabId())
-//                    .id(lab.getLid())
-//                    .cid(lab.getCourses().get(0).getCid())
-//                    .build();
-//            labCourseMapper.insert(labCourse);
-//
-//            Course c = Course.builder()
-//                    .id(lab.getCourses().get(0).getCid())
-//                    .name(lab.getCourses().get(0).getName())
-//                    .teacherId(lab.getCourses().get(0).getTeacherDTO().getTid())
-//                    .build();
-//            courseMapper.insert(c);
             return true;
         }
 
-//                if ( > 0 && lab.getDay() > 0 && lab.getClassHour() > 0) {
-//                    //如果该段时间内的实验室被预约了 则终止
-//                    for (int i = lab.getBeginWeek().intValue(); i <= lab.getEndWeek().intValue(); i++) {
-//                        for (int j = lab.getBeginDay().intValue(); j <= lab.getBeginDay().intValue(); j++) {
-//                            for (int k = lab.getBeginClassHour().intValue(); k <= lab.getEndClassHour().intValue(); k++) {
-//                                if (LabUtils.labList[i][j][k] == 1) {
-//                                    return false;
-//                                }
-//                            }
-//                        }
-//                    }
-//                    for (int i = lab.getBeginWeek().intValue(); i <= lab.getEndWeek().intValue(); i++) {
-//                        for (int j = lab.getBeginDay().intValue(); j <= lab.getBeginDay().intValue(); j++) {
-//                            for (int k = lab.getBeginClassHour().intValue(); k <= lab.getEndClassHour().intValue(); k++) {
-//                                LabUtils.labList[i][j][k] = 1;
-//                            }
-//                        }
-//                    }
-//                }
-//                //预约成功 实验室与课程建立关系
-//                LabCourse labCourse = LabCourse.builder()
-//                        .labId(lab.getLabId())
-//                        .id(lab.getLid())
-//                        .cid(lab.getCourseDTO().getCid())
-//                        .build();
-//                labCourseMapper.insert(labCourse);
-//
-//                Course c = Course.builder()
-//                        .id(lab.getCourseDTO().getCid())
-//                        .name(lab.getCourseDTO().getName())
-//                        .teacherId(lab.getCourseDTO().getTeacherDTO().getTid())
-//                        .build();
-//                courseMapper.insert(c);
-//                return true;
-//            }
         return false;
     }
 

@@ -9,7 +9,6 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 public class TeacherDTO {
-    private Long tid;
     private String number;
     private String name;
     private String post;
