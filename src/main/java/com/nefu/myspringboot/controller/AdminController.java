@@ -11,7 +11,6 @@ import com.nefu.myspringboot.service.CourseService;
 import com.nefu.myspringboot.service.LaboratoryService;
 import com.nefu.myspringboot.service.NoticeService;
 import com.nefu.myspringboot.service.UserService;
-import com.nefu.myspringboot.utils.LabUtils;
 import com.nefu.myspringboot.vo.ResultVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -100,28 +99,12 @@ public class AdminController {
     public ResultVO getTeacherCourse(@RequestAttribute("tid") Long tid) {
         return ResultVO.success(Map.of("deletelabs",courseServicer.listCoursesByTid(tid)));
     }
-    @ApiOperation("预约实验室")
-    @PostMapping("orderlab")
-    public ResultVO orderLab(@RequestBody LaboratoryDTO l) {
-        laboratoryService.addLabDTO(l);
-        return ResultVO.success(Map.of("orderlab",l,"status", LabUtils.labList));
-    }
-    @ApiOperation("取消预约实验室")
-    @PostMapping("unorderlab")
-    public ResultVO unorderLab(@RequestBody LaboratoryDTO l) {
-        laboratoryService.deleteLabDTO(l);
-        return ResultVO.success(Map.of("orderlab",l,"status", LabUtils.labList));
-    }
-    @ApiOperation("查询预约实验室的记录")
-    @PostMapping("orderlabslist")
-    public ResultVO orderLabslist() {
 
-        return ResultVO.success(Map.of("labcourse",laboratoryService.getAllLab(),"status", LabUtils.labList));
-    }
+
     @ApiOperation("实验室初始化")
     @PostMapping("initlabslist")
     public ResultVO initLabslist() {
         laboratoryService.initLaboratory();
-        return ResultVO.success(Map.of("init", LabUtils.labList));
+        return ResultVO.success(Map.of());
     }
 }

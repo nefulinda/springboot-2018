@@ -51,5 +51,10 @@ public class CommonController {
        List<LaboratoryDTO> labs  = laboratoryService.getListLab();
        return ResultVO.success(Map.of("labs",labs));
     }
+    @ApiOperation("获取实验室课程列表")
+    @GetMapping("orderlabscourses")
+    public ResultVO getLabsCourses ()  {
+       return ResultVO.success(Map.of("labcourses",laboratoryService.getAllOrderLab()));
+    }
 
 }

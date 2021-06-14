@@ -12,7 +12,6 @@ import com.nefu.myspringboot.dto.TeacherDTO;
 import com.nefu.myspringboot.entity.*;
 import com.nefu.myspringboot.mapper.*;
 import com.nefu.myspringboot.service.UserService;
-import com.nefu.myspringboot.utils.LabUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -7,7 +7,6 @@ import com.nefu.myspringboot.entity.Course;
 import com.nefu.myspringboot.service.CourseService;
 import com.nefu.myspringboot.service.LaboratoryService;
 import com.nefu.myspringboot.service.UserService;
-import com.nefu.myspringboot.utils.LabUtils;
 import com.nefu.myspringboot.vo.ResultVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -55,13 +54,13 @@ public class TeacherController {
     @PostMapping("orderlab")
     public ResultVO orderLab(@RequestBody LaboratoryDTO l) {
         laboratoryService.addLabDTO(l);
-        return ResultVO.success(Map.of("orderlab",l,"status", LabUtils.labList));
+        return ResultVO.success(Map.of("orderlab",l));
     }
     @ApiOperation("取消预约实验室")
     @PostMapping("unorderlab")
     public ResultVO unorderLab(@RequestBody LaboratoryDTO l) {
         laboratoryService.deleteLabDTO(l);
-        return ResultVO.success(Map.of("orderlab",l,"status", LabUtils.labList));
+        return ResultVO.success(Map.of("orderlab",l));
     }
 
 }

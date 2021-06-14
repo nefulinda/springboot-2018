@@ -3,12 +3,14 @@ package com.nefu.myspringboot.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.nefu.myspringboot.common.Hour;
 import com.nefu.myspringboot.dto.LaboratoryDTO;
+import com.nefu.myspringboot.entity.Course;
 import com.nefu.myspringboot.entity.LabCourse;
 import com.nefu.myspringboot.entity.Laboratory;
 import com.nefu.myspringboot.mapper.CourseMapper;
 import com.nefu.myspringboot.mapper.LabCourseMapper;
 import com.nefu.myspringboot.mapper.LaboratoryMapper;
 import com.nefu.myspringboot.utils.LabUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +20,7 @@ import java.util.List;
 
 @Service
 @Transactional
-
+@Slf4j
 public class LaboratoryService {
     @Autowired
     private LabCourseMapper labCourseMapper;
@@ -31,6 +33,7 @@ public class LaboratoryService {
 
     //实验室初始化
     public void initLaboratory() {
+        labCourseMapper.delete(null);
         LabUtils.initLab();
     }
 
@@ -46,8 +49,8 @@ public class LaboratoryService {
                         for (int k = 1; k < Hour.SECTION; k++) {
                             if (Integer.valueOf(lab.getSchedules().get(m).getWeek()) == i
                                     && Integer.valueOf(lab.getSchedules().get(m).getDay()) == j
-                                    && Integer.valueOf(lab.getSchedules().get(m).getOrder()).intValue() == j
-                                    && lab.getSchedules().get(m).isStatus() == true) {
+                                    && Integer.valueOf(lab.getSchedules().get(m).getOrder()).intValue() == k
+                                    && LabUtils.labList[i][j][k]==1) {
                                 return false;
                             }
                         }
@@ -58,8 +61,8 @@ public class LaboratoryService {
                         for (int k = 1; k < Hour.SECTION; k++) {
                             if (Integer.valueOf(lab.getSchedules().get(m).getWeek()) == i
                                     && Integer.valueOf(lab.getSchedules().get(m).getDay()) == j
-                                    && Integer.valueOf(lab.getSchedules().get(m).getOrder()).intValue() == j
-                                    && lab.getSchedules().get(m).isStatus() == false) {
+                                    && Integer.valueOf(lab.getSchedules().get(m).getOrder()).intValue() == k
+                                    && LabUtils.labList[i][j][k]==0) {
                                 LabCourse labCourse = LabCourse.builder()
                                         .cid(lab.getSchedules().get(m).getCourse().getId())
                                         .labId(lab.getNumber())
@@ -67,12 +70,16 @@ public class LaboratoryService {
                                         .day(Integer.toString(j))
                                         .section(Integer.toString(k))
                                         .build();
+                                LabUtils.labList[i][j][k]=1;
                                 labCourseMapper.insert(labCourse);
                             }
                         }
                     }
                 }
-                courseMapper.insert(lab.getSchedules().get(0).getCourse());
+                Course c = courseMapper.selectById(lab.getSchedules().get(m).getCourse().getId());
+                if (c == null) {
+                    courseMapper.insert(lab.getSchedules().get(m).getCourse());
+                }
             }
             return true;
         }
@@ -97,6 +104,7 @@ public class LaboratoryService {
                                     && Integer.valueOf(lab.getSchedules().get(m).getDay()) == j
                                     && Integer.valueOf(lab.getSchedules().get(m).getOrder()).intValue() == j
                                     && lab.getSchedules().get(m).isStatus() == true) {
+                                LabUtils.labList[i][j][k]=0;
                                 lab.getSchedules().get(m).setStatus(false);
                             }
                         }
@@ -113,8 +121,8 @@ public class LaboratoryService {
         return laboratoryMapper.selectOne(queryWrapper);
     }
 
-    //查询预约实验室的记录
-    public List<LabCourse> getAllLab() {
+    //查询实验室课程
+    public List<LabCourse> getAllOrderLab() {
         return labCourseMapper.listCourse();
     }
 

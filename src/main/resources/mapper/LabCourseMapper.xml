@@ -2,9 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nefu.myspringboot.mapper.LabCourseMapper">
 
-    <select id="listCourse" resultType="com.nefu.myspringboot.dto.LaboratoryDTO">
-        select lc.lab_id,
-               c.id,c.teacher_id,c.name
-               from lab_course lc  join course c  on  lc.id=c.id  group by lc.lab_id
+    <select id="listCourse" resultType="com.nefu.myspringboot.entity.LabCourse">
+        select * from lab_course
     </select>
 </mapper>

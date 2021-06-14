@@ -52,7 +52,7 @@ create table if not exists lab_course
     week        varchar(3),
     day         varchar(3),
     section       varchar(3),
-    status      boolean             default false,
+    status      boolean            default false,
     create_time datetime   not null default current_timestamp,
     update_time datetime   not null default current_timestamp on update current_timestamp,
     version     int                 default 0,
