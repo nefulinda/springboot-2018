@@ -1,6 +1,7 @@
 package com.nefu.myspringboot.dto;
 
 import com.nefu.myspringboot.entity.Course;
+import com.nefu.myspringboot.entity.Schedule;
 import lombok.*;
 
 @Setter
@@ -10,10 +11,6 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 public class ScheduleDTO {
-    private  String week;
-    private String day;
-    private String order;
+    private Schedule schedule;
     private Course course;
-    private boolean status=false;
 }
-

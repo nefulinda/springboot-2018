@@ -2,8 +2,14 @@ package com.nefu.myspringboot.service;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.nefu.myspringboot.common.Hour;
+import com.nefu.myspringboot.dto.LaboratoryDTO;
+import com.nefu.myspringboot.entity.Laboratory;
+import com.nefu.myspringboot.entity.Schedule;
 import com.nefu.myspringboot.entity.Teacher;
 import com.nefu.myspringboot.entity.User;
+import com.nefu.myspringboot.mapper.LaboratoryMapper;
+import com.nefu.myspringboot.mapper.ScheduleMapper;
 import com.nefu.myspringboot.mapper.TeacherMapper;
 import com.nefu.myspringboot.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +29,10 @@ public class InitService implements InitializingBean {
     private UserMapper userMapper;
     @Autowired
     private TeacherMapper teacherMapper;
+    @Autowired
+    private ScheduleMapper scheduleMapper;
+    @Autowired
+    private LaboratoryMapper laboratoryMapper;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -50,6 +60,38 @@ public class InitService implements InitializingBean {
                     .college("信息与计算机工程学院")
                     .build();
             teacherMapper.insert(t);
+            Laboratory l = Laboratory.builder()
+                    .number(901)
+                    .computerNumber(50)
+                    .build();
+            Laboratory laboratory = Laboratory.builder()
+                    .number(902)
+                    .computerNumber(50)
+                    .build();
+            laboratoryMapper.insert(l);
+            laboratoryMapper.insert(laboratory);
+            for (int i = 1; i <= Hour.WEEK; i++) {
+                for (int j = 1; j <= Hour.DAY; j++) {
+                    for (int k = 1; k <= Hour.SECTION; k++) {
+                        Schedule s =Schedule.builder()
+                                .labId(901)
+                                .week(Integer.toString(i))
+                                .day(Integer.toString(j))
+                                .section(Integer.toString(k))
+                                .state(0)
+                                .build();
+                        Schedule s2 =Schedule.builder()
+                                .labId(902)
+                                .week(Integer.toString(i))
+                                .day(Integer.toString(j))
+                                .section(Integer.toString(k))
+                                .state(0)
+                                .build();
+                        scheduleMapper.insert(s);
+                        scheduleMapper.insert(s2);
+                    }
+                }
+            }
         }
     }
 }

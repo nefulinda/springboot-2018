@@ -3,13 +3,12 @@ package com.nefu.myspringboot.service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.nefu.myspringboot.common.Hour;
 import com.nefu.myspringboot.dto.LaboratoryDTO;
-import com.nefu.myspringboot.entity.Course;
-import com.nefu.myspringboot.entity.LabCourse;
+import com.nefu.myspringboot.dto.ScheduleDTO;
 import com.nefu.myspringboot.entity.Laboratory;
+import com.nefu.myspringboot.entity.Schedule;
 import com.nefu.myspringboot.mapper.CourseMapper;
-import com.nefu.myspringboot.mapper.LabCourseMapper;
 import com.nefu.myspringboot.mapper.LaboratoryMapper;
-import com.nefu.myspringboot.utils.LabUtils;
+import com.nefu.myspringboot.mapper.ScheduleMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,90 +22,69 @@ import java.util.List;
 @Slf4j
 public class LaboratoryService {
     @Autowired
-    private LabCourseMapper labCourseMapper;
-    @Autowired
-    private CourseMapper courseMapper;
-    @Autowired
     private LaboratoryMapper laboratoryMapper;
-
-    private LaboratoryDTO laboratoryDTO;
+    @Autowired
+    private ScheduleMapper scheduleMapper;
 
     //实验室初始化
     public void initLaboratory() {
-        labCourseMapper.delete(null);
-        LabUtils.initLab();
-    }
-
-    //预约实验室
-    public boolean addLabDTO(LaboratoryDTO lab) {
-
-        Laboratory l = selectLab(lab.getNumber());
-        if (l != null) {
-            for (int m = 0; m < lab.getSchedules().size(); m++) {
-                //如果该段时间内的实验室被预约了 则终止
-                for (int i = 1; i < Hour.WEEK; i++) {
-                    for (int j = 1; j < Hour.DAY; j++) {
-                        for (int k = 1; k < Hour.SECTION; k++) {
-                            if (Integer.valueOf(lab.getSchedules().get(m).getWeek()) == i
-                                    && Integer.valueOf(lab.getSchedules().get(m).getDay()) == j
-                                    && Integer.valueOf(lab.getSchedules().get(m).getOrder()).intValue() == k
-                                    && LabUtils.labList[i][j][k]==1) {
-                                return false;
-                            }
-                        }
+        scheduleMapper.delete(null);
+        List<Laboratory> laboratories = laboratoryMapper.selectList(null);
+        for (Laboratory laboratory : laboratories) {
+            for (int i = 1; i <= Hour.WEEK; i++) {
+                for (int j = 1; j <= Hour.DAY; j++) {
+                    for (int k = 1; k <= Hour.SECTION; k++) {
+                        Schedule s = Schedule.builder()
+                                .labId(laboratory.getNumber())
+                                .week(Integer.toString(i))
+                                .day(Integer.toString(j))
+                                .section(Integer.toString(k))
+                                .state(0)
+                                .build();
+                        scheduleMapper.insert(s);
                     }
-                }
-                for (int i = 1; i < Hour.WEEK; i++) {
-                    for (int j = 1; j < Hour.DAY; j++) {
-                        for (int k = 1; k < Hour.SECTION; k++) {
-                            if (Integer.valueOf(lab.getSchedules().get(m).getWeek()) == i
-                                    && Integer.valueOf(lab.getSchedules().get(m).getDay()) == j
-                                    && Integer.valueOf(lab.getSchedules().get(m).getOrder()).intValue() == k
-                                    && LabUtils.labList[i][j][k]==0) {
-                                LabCourse labCourse = LabCourse.builder()
-                                        .cid(lab.getSchedules().get(m).getCourse().getId())
-                                        .labId(lab.getNumber())
-                                        .week(Integer.toString(i))
-                                        .day(Integer.toString(j))
-                                        .section(Integer.toString(k))
-                                        .build();
-                                LabUtils.labList[i][j][k]=1;
-                                labCourseMapper.insert(labCourse);
-                            }
-                        }
-                    }
-                }
-                Course c = courseMapper.selectById(lab.getSchedules().get(m).getCourse().getId());
-                if (c == null) {
-                    courseMapper.insert(lab.getSchedules().get(m).getCourse());
                 }
             }
-            return true;
         }
+    }
 
-        return false;
+
+    //预约实验室
+    public void addLabDTO(LaboratoryDTO lab) {
+        Laboratory l = selectLab(lab.getNumber());
+        if (l != null) {
+            for (ScheduleDTO s : lab.getSchedules()) {
+                for (int i = 1; i <= Hour.WEEK; i++) {
+                    for (int j = 1; j <= Hour.DAY; j++) {
+                        for (int k = 1; k <= Hour.SECTION; k++) {
+                            if (i == Integer.valueOf(s.getSchedule().getWeek())
+                                    && j == Integer.valueOf(s.getSchedule().getDay())
+                                    && k == Integer.valueOf(s.getSchedule().getSection())
+                                    && scheduleMapper.state(lab.getNumber(), i, j, k) == 0) {
+                                Schedule schedule = scheduleMapper.selectById(s.getSchedule().getId());
+                                schedule.setState(1);
+                                scheduleMapper.updateById(schedule);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     //取消预约
     public void deleteLabDTO(LaboratoryDTO lab) {
-
-        LabCourse l = labCourseMapper.selectById(lab.getLid());
-        if (l != null) {
-            courseMapper.deleteById(lab.getSchedules().get(0).getCourse().getId());
-            QueryWrapper<LabCourse> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq("cid", lab.getSchedules().get(0).getCourse().getId());
-            labCourseMapper.delete(queryWrapper);
-            for (int m = 0; m < lab.getSchedules().size(); m++) {
-                for (int i = 1; i < Hour.WEEK; i++) {
-                    for (int j = 1; j < Hour.DAY; j++) {
-                        for (int k = 1; k < Hour.SECTION; k++) {
-                            if (Integer.valueOf(lab.getSchedules().get(m).getWeek()) == i
-                                    && Integer.valueOf(lab.getSchedules().get(m).getDay()) == j
-                                    && Integer.valueOf(lab.getSchedules().get(m).getOrder()).intValue() == j
-                                    && lab.getSchedules().get(m).isStatus() == true) {
-                                LabUtils.labList[i][j][k]=0;
-                                lab.getSchedules().get(m).setStatus(false);
-                            }
+        for (ScheduleDTO s : lab.getSchedules()) {
+            for (int i = 1; i <= Hour.WEEK; i++) {
+                for (int j = 1; j <= Hour.DAY; j++) {
+                    for (int k = 1; k <= Hour.SECTION; k++) {
+                        if (i == Integer.valueOf(s.getSchedule().getWeek())
+                                && j == Integer.valueOf(s.getSchedule().getDay())
+                                && k == Integer.valueOf(s.getSchedule().getSection())
+                                && scheduleMapper.state(lab.getNumber(), i, j, k) == 1) {
+                            Schedule schedule = scheduleMapper.selectById(s.getSchedule().getId());
+                            schedule.setState(0);
+                            scheduleMapper.updateById(schedule);
                         }
                     }
                 }
@@ -122,31 +100,48 @@ public class LaboratoryService {
     }
 
     //查询实验室课程
-    public List<LabCourse> getAllOrderLab() {
-        return labCourseMapper.listCourse();
+    public List<LaboratoryDTO> getAllSchedule() {
+        return scheduleMapper.list();
     }
 
-    //获取实验室
-    public List<LaboratoryDTO> getListLab() {
+    //获取实验室列表
+    public List<Laboratory> getListLab() {
         return laboratoryMapper.listLab();
     }
 
     //增加实验室
     public void addLab(Laboratory laboratory) {
-        Laboratory l = Laboratory.builder()
-                .number(laboratory.getNumber())
-                .computerNumber(laboratory.getComputerNumber())
-                .build();
-        laboratoryMapper.insert(l);
-
+        QueryWrapper<Laboratory> l = new QueryWrapper<>();
+        l.eq("number", laboratory.getNumber());
+        Laboratory lab = laboratoryMapper.selectOne(l);
+        if (lab == null) {
+            laboratoryMapper.insert(laboratory);
+            for (int i = 1; i <= Hour.WEEK; i++) {
+                for (int j = 1; j <= Hour.DAY; j++) {
+                    for (int k = 1; k <= Hour.SECTION; k++) {
+                        Schedule s = Schedule.builder()
+                                .labId(lab.getNumber())
+                                .week(Integer.toString(i))
+                                .day(Integer.toString(j))
+                                .section(Integer.toString(k))
+                                .build();
+                        scheduleMapper.insert(s);
+                    }
+                }
+            }
+        }
     }
 
     //删除实验室
-    public void deleteLab(String name) {
+    public void deleteLab(int number) {
         QueryWrapper<Laboratory> l = new QueryWrapper<>();
-        l.eq("name", name);
-        laboratoryMapper.delete(l);
+        l.eq("number", number);
+        Laboratory lab = laboratoryMapper.selectOne(l);
+        if (lab != null) {
+            QueryWrapper<Schedule> scheduleQueryWrapper = new QueryWrapper<>();
+            scheduleQueryWrapper.eq("lab_id", number);
+            scheduleMapper.delete(scheduleQueryWrapper);
+            laboratoryMapper.delete(l);
+        }
     }
-
-
 }

@@ -48,13 +48,13 @@ public class CommonController {
     @ApiOperation("获取全部实验室列表")
     @GetMapping("labs")
     public ResultVO getLab ()  {
-       List<LaboratoryDTO> labs  = laboratoryService.getListLab();
+       List<Laboratory> labs  = laboratoryService.getListLab();
        return ResultVO.success(Map.of("labs",labs));
     }
     @ApiOperation("获取实验室课程列表")
     @GetMapping("orderlabscourses")
     public ResultVO getLabsCourses ()  {
-       return ResultVO.success(Map.of("labcourses",laboratoryService.getAllOrderLab()));
+       return ResultVO.success(Map.of("labcourses",laboratoryService.getAllSchedule()));
     }
 
 }

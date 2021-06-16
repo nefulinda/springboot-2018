@@ -26,8 +26,6 @@ class MyspringbootApplicationTests {
     @Autowired
     private UserService userService;
     @Autowired
-    private LabCourseMapper labCourseMapper;
-    @Autowired
     private PasswordEncoder encoder;
     @Autowired
     private UserMapper userMapper;
@@ -182,7 +180,7 @@ class MyspringbootApplicationTests {
     @Test
     public void addssLab() {
         Laboratory l = Laboratory.builder()
-                .number(922L)
+                .number(922)
                 .computerNumber(60)
                 .build();
         laboratoryMapper.insert(l);

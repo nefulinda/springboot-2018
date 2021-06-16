@@ -36,43 +36,16 @@ create table if not exists student
 );
 create table if not exists laboratory
 (
-    number          int      not null primary key,
-    computer_number int               default null,
-    create_time     datetime not null default current_timestamp,
-    update_time     datetime not null default current_timestamp on update current_timestamp,
-    version         int               default 0,
+    id              bigint(19) not null primary key,
+    number          int        not null,
+    computer_number int                 default null,
+    create_time     datetime   not null default current_timestamp,
+    update_time     datetime   not null default current_timestamp on update current_timestamp,
+    version         int                 default 0,
     index (number)
+);
 
-);
-create table if not exists lab_course
-(
-    id          bigint(19) not null,
-    lab_id      bigint(19) not null,
-    cid         bigint(19) not null,
-    week        varchar(3),
-    day         varchar(3),
-    section       varchar(3),
-    status      boolean            default false,
-    create_time datetime   not null default current_timestamp,
-    update_time datetime   not null default current_timestamp on update current_timestamp,
-    version     int                 default 0,
-    index (id),
-    index (lab_id),
-    index (cid)
-);
-create table if not exists laboratory_student
-(
-    id          bigint(19)  not null primary key,
-    name        varchar(32) not null,
-    student_id  bigint(19)  not null,
-    teacher_id  bigint(19)  not null,
-    create_time datetime    not null default current_timestamp,
-    update_time datetime    not null default current_timestamp on update current_timestamp,
-    version     int                  default 0,
-    index (id),
-    index (student_id),
-    index (teacher_id)
-);
+
 create table if not exists course
 (
     id          bigint(19)  not null primary key,
@@ -105,3 +78,17 @@ create table if not exists notice
     version     int                  default 0,
     index (id)
 );
+create table if not exists schedule
+(
+    id      bigint(19) not null primary key,
+    lab_id  int        not null,
+    cid     bigint(19) default 0,
+    week    varchar(3),
+    day     varchar(3),
+    section varchar(3),
+    state   int        default 0,
+    version int        default 0,
+    index (lab_id)
+);
+
+
