@@ -48,9 +48,9 @@ public class AdminController {
     }
     @ApiOperation("删除教师")
     @PostMapping("deleteteacher")
-    public ResultVO deleteTeacher(@RequestAttribute("number") String number) {
-        userService.deleteTeacher(number);
-        return ResultVO.success(Map.of("teachernumber", number));
+    public ResultVO deleteTeacher(@RequestBody TeacherDTO teacher) {
+        userService.deleteTeacher(teacher.getNumber());
+        return ResultVO.success(Map.of("teachernumber", teacher.getNumber()));
     }
     @ApiOperation("修改教师信息")
     @PostMapping("modifyteacher")
@@ -60,8 +60,8 @@ public class AdminController {
     }
     @ApiOperation("通过名字获取教师")
     @PostMapping("getusersname")
-    public ResultVO getTeacherByname(@RequestAttribute("name") String name) {
-        List<User> users = userService.getUserByName(name);
+    public ResultVO getTeacherByname(@RequestBody TeacherDTO teacher) {
+        List<User> users = userService.getUserByName(teacher.getName());
         return ResultVO.success(Map.of("user", users));
     }
 
@@ -80,27 +80,30 @@ public class AdminController {
 
     @ApiOperation("删除实验室")
     @PostMapping("deletelab")
-    public ResultVO deleteLab(@RequestAttribute("name") int number) {
-        laboratoryService.deleteLab(number);
-        return ResultVO.success(Map.of("deletelab",number));
+    public ResultVO deleteLab(@RequestBody Laboratory laboratory) {
+        laboratoryService.deleteLab(laboratory.getNumber());
+        return ResultVO.success(Map.of("deletelab",laboratory.getNumber()));
+    }
+
+    @ApiOperation("修改实验室")
+    @PostMapping("updatelab")
+    public ResultVO updateLab(@RequestBody Laboratory laboratory) {
+        laboratoryService.updateLab(laboratory);
+        return ResultVO.success(Map.of("updatelab",laboratoryService.getListLab()));
     }
     @ApiOperation("获取全部课程")
     @GetMapping("getallcourses")
     public ResultVO getCourses() {
         return ResultVO.success(Map.of("allCourse",courseServicer.getAllCourses()));
     }
-    @ApiOperation("通过课程号获取课程")
-    @GetMapping("getidcourse")
-    public ResultVO getCourse(@RequestAttribute("sid") long sid) {
-        return ResultVO.success(Map.of("getCourseId",courseServicer.listCoursesBySid(sid)));
-    }
 
 
-    @ApiOperation("获取指定老师的课程")
-    @GetMapping("gettidcourse")
-    public ResultVO getTeacherCourse(@RequestAttribute("tid") long tid) {
-        return ResultVO.success(Map.of("gettidcourse",courseServicer.listCoursesByTid(tid)));
-    }
+
+//    @ApiOperation("获取指定老师的课程 ")
+//    @GetMapping("gettidcourse")
+//    public ResultVO getTeacherCourse(@RequestAttribute(value = "uid") long uid) {
+//        return ResultVO.success(Map.of("gettidcourse",courseServicer.listCoursesByTid(uid)));
+//    }
 
 
     @ApiOperation("实验室初始化")
@@ -109,4 +112,5 @@ public class AdminController {
         laboratoryService.initLaboratory();
         return ResultVO.success(Map.of());
     }
+
 }

@@ -18,9 +18,7 @@ import lombok.*;
 public class Teacher {
     private Long id;
     @ApiModelProperty("职位")
-    private String post;
-    @ApiModelProperty("学院")
-    private String college;
+    private String title;
     @TableField(updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime createTime;
 

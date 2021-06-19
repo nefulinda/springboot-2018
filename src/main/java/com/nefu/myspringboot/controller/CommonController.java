@@ -30,14 +30,14 @@ public class CommonController {
     @Autowired
     private LaboratoryService laboratoryService;
 
-    @ApiOperation("登录后首页信息，加载用户的全部课程")
-    @GetMapping("home")
-    public ResultVO getCourses(@RequestAttribute("uid") long uid, @RequestAttribute("role") int role) {
-        List<Course> courses = role == Role.TEACHER
-                ? courseService.listCoursesByTid(uid)
-                : courseService.listCoursesBySid(uid);
-        return ResultVO.success(Map.of("courses", courses));
-    }
+//    @ApiOperation("登录后首页信息，加载用户的全部课程")
+//    @GetMapping("home")
+//    public ResultVO getCourses(@RequestAttribute("uid") long uid, @RequestAttribute("role") int role) {
+//        List<Course> courses = role == Role.TEACHER
+//                ? courseService.listCoursesByTid(uid)
+//                : courseService.listCoursesBySid(uid);
+//        return ResultVO.success(Map.of("courses", courses));
+//    }
     @ApiOperation("修改密码")
     @PatchMapping("password")
     public ResultVO patchPassword(@RequestBody Map<String, String> map, @RequestAttribute("uid") long uid) {

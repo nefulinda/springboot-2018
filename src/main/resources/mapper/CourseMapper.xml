@@ -2,9 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nefu.myspringboot.mapper.CourseMapper">
 
-    <select id="listBySid" resultType="com.nefu.myspringboot.entity.Course">
+    <select id="listBySid" resultType="com.nefu.myspringboot.entity.Course" parameterType="long">
         select c.* from course c
             join student_course sc on sc.course_id = c.id
         where sc.student_id=#{sid}
+    </select>
+    <select id="getCoursesByNumber" resultType="com.nefu.myspringboot.entity.Course" parameterType="string" >
+        select c.* from course c
+            join user  u on u.number = c.teacher_id
+        where c.teacher_id=#{number}
     </select>
 </mapper>

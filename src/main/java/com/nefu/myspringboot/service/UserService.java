@@ -50,7 +50,9 @@ public class UserService {
         queryWrapper.eq("name", name).orderByDesc("number");
         return userMapper.selectList(queryWrapper);
     }
-
+       public User getId(long uid){
+        return userMapper.selectById(uid);
+       }
     //查询指定学号或工号的用户
     public User getUserByNumber(String number) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
@@ -76,8 +78,7 @@ public class UserService {
         // user保存后，会获取到id值。作为teacher表的id。共用主键
         Teacher t = Teacher.builder()
                 .id(u.getId())
-                .college(teacher.getCollege())
-                .post(teacher.getPost())
+                .title(teacher.getTitle())
                 .build();
         teacherMapper.insert(t);
         return t;
@@ -108,11 +109,11 @@ public class UserService {
         User u = userMapper.selectOne(queryWrapper);
         Teacher t = teacherMapper.selectById(u.getId());
         if (t != null && u != null) {
-            t.setCollege(teacher.getCollege());
-            t.setPost(teacher.getPost());
+            t.setTitle(teacher.getTitle());
             u.setName(teacher.getName());
             u.setNumber(teacher.getNumber());
-
+            userMapper.updateById(u);
+            teacherMapper.updateById(t);
         }
     }
 

@@ -3,8 +3,8 @@
 <mapper namespace="com.nefu.myspringboot.mapper.TeacherMapper">
 
     <select id="list" resultType="com.nefu.myspringboot.dto.TeacherDTO">
-        select t.*,
-               u.name
+        select t.title,
+               u.name,u.number
                from teacher t join user u on t.id=u.id
     </select>
 </mapper>

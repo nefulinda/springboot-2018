@@ -11,6 +11,7 @@ import com.nefu.myspringboot.dto.StudentDTO;
 import com.nefu.myspringboot.dto.TeacherDTO;
 import com.nefu.myspringboot.entity.*;
 import com.nefu.myspringboot.mapper.*;
+import com.nefu.myspringboot.service.LaboratoryService;
 import com.nefu.myspringboot.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,11 @@ class MyspringbootApplicationTests {
     private CourseMapper courseMapper;
     @Autowired
     private LaboratoryMapper laboratoryMapper;
+    @Autowired
+    private LaboratoryService laboratoryService;
+    @Autowired
+    private ScheduleCourseMapper scheduleCourseMapper;
+
 
 
     @Test
@@ -131,8 +137,7 @@ class MyspringbootApplicationTests {
         TeacherDTO teacherDTO = TeacherDTO.builder()
                 .name("BO")
                 .number("1006")
-                .post("讲师")
-                .college("信息院")
+                .title("jiangshi")
                 .build();
         Teacher t = userService.addTeacher(teacherDTO);
         System.out.println(t);
@@ -180,11 +185,67 @@ class MyspringbootApplicationTests {
     @Test
     public void addssLab() {
         Laboratory l = Laboratory.builder()
-                .number(922)
+                .number(922L)
                 .computerNumber(60)
                 .build();
         laboratoryMapper.insert(l);
 
+    }
+    @Test
+    public void test5() {
+         List<LaboratoryDTO> laboratoryDTOS= laboratoryService.getAllSchedule();
+        for (LaboratoryDTO laboratoryDTO : laboratoryDTOS) {
+            System.out.println(laboratoryDTO);
+        }
+    }
+    @Test
+    public void test6(){
+        Laboratory laboratory = Laboratory.builder()
+                .number(905L)
+                .computerNumber(50)
+                .build();
+        QueryWrapper<Laboratory> l = new QueryWrapper<>();
+        l.eq("number", laboratory.getNumber());
+        Laboratory lab = laboratoryMapper.selectOne(l);
+        if (lab == null) {
+            laboratoryMapper.insert(laboratory);
+            for (int i = 1; i <= Hour.WEEK; i++) {
+                for (int j = 1; j <= Hour.DAY; j++) {
+                    for (int k = 1; k <= Hour.SECTION; k++) {
+                        ScheduleCourse s = ScheduleCourse.builder()
+                                .labId(laboratory.getNumber())
+                                .week(i)
+                                .name("无")
+                                .day(j)
+                                .section(k)
+                                .build();
+                        scheduleCourseMapper.insert(s);
+                    }
+                }
+            }
+        }
+    }
+    @Test
+    public void test7(){
+        QueryWrapper<Laboratory> l = new QueryWrapper<>();
+        l.eq("number", 905);
+        Laboratory lab = laboratoryMapper.selectOne(l);
+        if (lab != null) {
+            QueryWrapper<ScheduleCourse> scheduleQueryWrapper = new QueryWrapper<>();
+            scheduleQueryWrapper.eq("lab_id", 905);
+            scheduleCourseMapper.delete(scheduleQueryWrapper);
+            laboratoryMapper.delete(l);
+        }
+    }
+
+    @Test
+    public void test8(){
+        QueryWrapper<Course> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("teacher_id",0);
+        List<Course> courses= courseMapper.selectList(queryWrapper);
+        for (Course cours : courses) {
+            System.out.println(cours);
+        }
     }
 }
 

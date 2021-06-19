@@ -3,7 +3,10 @@ package com.nefu.myspringboot.controller;
 
 import com.nefu.myspringboot.dto.CourseDTO;
 import com.nefu.myspringboot.dto.LaboratoryDTO;
+import com.nefu.myspringboot.dto.TeacherDTO;
 import com.nefu.myspringboot.entity.Course;
+import com.nefu.myspringboot.entity.User;
+import com.nefu.myspringboot.mapper.UserMapper;
 import com.nefu.myspringboot.service.CourseService;
 import com.nefu.myspringboot.service.LaboratoryService;
 import com.nefu.myspringboot.service.UserService;
@@ -13,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @Api(value = "处理教师角色请求", tags = {"Authorization, Teacher"})
@@ -27,16 +31,28 @@ public class TeacherController {
     private LaboratoryService laboratoryService;
 
     @ApiOperation("添加课程，并返回当前教师全部课程")
-    @PostMapping("courses")
-    public ResultVO postCourse(@RequestBody Course course, @RequestAttribute("uid") long uid) {
-        courseService.addCourse(course, uid);
-        return ResultVO.success(Map.of("courses", courseService.listCoursesByTid(uid)));
+    @PostMapping("addcourses")
+    public ResultVO postCourse(@RequestBody Course course) {
+        courseService.addCourse(course);
+        return ResultVO.success(Map.of("courses", courseService.getCoursesByNumber(course.getTeacherId())));
     }
-
+    @ApiOperation("通过课程名删除课程，并返回当前教师全部课程")
+    @PostMapping("deletecourses")
+    public ResultVO deleteCourse(@RequestBody Course course) {
+        courseService.deleteCourse(course.getName());
+        return ResultVO.success(Map.of("courses", courseService.getCoursesByNumber(course.getTeacherId())));
+    }
+    @ApiOperation("修改课程")
+    @PostMapping("updatecourse")
+    public ResultVO updatecourse(@RequestBody Course course) {
+        courseService.updateCourse(course);
+        return ResultVO.success(Map.of("updatecourse",course));
+    }
     @ApiOperation("获取当前教师全部课程")
     @GetMapping("courses")
     public ResultVO getCourses(@RequestAttribute("uid") long uid) {
-        return ResultVO.success(Map.of("courses", courseService.listCoursesByTid(uid)));
+         User u= userService.getId(uid);
+        return ResultVO.success(Map.of("courses", courseService.getCoursesByNumber(u.getNumber())));
     }
 
     @ApiOperation(value = "为指定课程添加学生",
@@ -53,14 +69,15 @@ public class TeacherController {
     @ApiOperation("预约实验室")
     @PostMapping("orderlab")
     public ResultVO orderLab(@RequestBody LaboratoryDTO l) {
+        System.out.println(l);
         laboratoryService.addLabDTO(l);
-        return ResultVO.success(Map.of("orderlab",l));
+        return ResultVO.success(Map.of("orderlabs",laboratoryService.getAllSchedule()));
     }
-    @ApiOperation("取消预约实验室")
-    @PostMapping("unorderlab")
-    public ResultVO unorderLab(@RequestBody LaboratoryDTO l) {
-        laboratoryService.deleteLabDTO(l);
-        return ResultVO.success(Map.of("orderlab",l));
-    }
+//    @ApiOperation("取消预约实验室")
+//    @PostMapping("unorderlab")
+//    public ResultVO unorderLab(@RequestBody LaboratoryDTO l) {
+//        laboratoryService.deleteLabDTO(l);
+//        return ResultVO.success(Map.of("unorderlab",laboratoryService.getAllSchedule()));
+//    }
 
 }

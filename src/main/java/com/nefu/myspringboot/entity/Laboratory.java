@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 public class Laboratory {
     private Long id;
     @ApiModelProperty("实验室编号")
-    private Integer number;
+    private Long number;
     @ApiModelProperty("实验室机器数量")
     private  Integer computerNumber;
     @TableField(updateStrategy = FieldStrategy.NEVER)

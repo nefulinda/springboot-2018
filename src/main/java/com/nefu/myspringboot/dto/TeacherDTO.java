@@ -11,7 +11,6 @@ import lombok.*;
 public class TeacherDTO {
     private String number;
     private String name;
-    private String post;
-    private String college;
+    private String title;
 
 }

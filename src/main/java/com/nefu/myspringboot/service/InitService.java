@@ -3,15 +3,11 @@ package com.nefu.myspringboot.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.nefu.myspringboot.common.Hour;
-import com.nefu.myspringboot.dto.LaboratoryDTO;
 import com.nefu.myspringboot.entity.Laboratory;
-import com.nefu.myspringboot.entity.Schedule;
+import com.nefu.myspringboot.entity.ScheduleCourse;
 import com.nefu.myspringboot.entity.Teacher;
 import com.nefu.myspringboot.entity.User;
-import com.nefu.myspringboot.mapper.LaboratoryMapper;
-import com.nefu.myspringboot.mapper.ScheduleMapper;
-import com.nefu.myspringboot.mapper.TeacherMapper;
-import com.nefu.myspringboot.mapper.UserMapper;
+import com.nefu.myspringboot.mapper.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,9 +26,9 @@ public class InitService implements InitializingBean {
     @Autowired
     private TeacherMapper teacherMapper;
     @Autowired
-    private ScheduleMapper scheduleMapper;
-    @Autowired
     private LaboratoryMapper laboratoryMapper;
+    @Autowired
+    private ScheduleCourseMapper scheduleCourseMapper;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -56,16 +52,15 @@ public class InitService implements InitializingBean {
             userMapper.insert(u);
             Teacher t = Teacher.builder()
                     .id(u.getId())
-                    .post("讲师")
-                    .college("信息与计算机工程学院")
+                    .title("讲师")
                     .build();
             teacherMapper.insert(t);
             Laboratory l = Laboratory.builder()
-                    .number(901)
+                    .number(901L)
                     .computerNumber(50)
                     .build();
             Laboratory laboratory = Laboratory.builder()
-                    .number(902)
+                    .number(902L)
                     .computerNumber(50)
                     .build();
             laboratoryMapper.insert(l);
@@ -73,22 +68,24 @@ public class InitService implements InitializingBean {
             for (int i = 1; i <= Hour.WEEK; i++) {
                 for (int j = 1; j <= Hour.DAY; j++) {
                     for (int k = 1; k <= Hour.SECTION; k++) {
-                        Schedule s =Schedule.builder()
-                                .labId(901)
-                                .week(Integer.toString(i))
-                                .day(Integer.toString(j))
-                                .section(Integer.toString(k))
-                                .state(0)
+                        ScheduleCourse s = ScheduleCourse.builder()
+                                .labId(laboratory.getNumber())
+                                .week(i)
+                                .name("无")
+                                .state(true)
+                                .day(j)
+                                .section(k)
                                 .build();
-                        Schedule s2 =Schedule.builder()
-                                .labId(902)
-                                .week(Integer.toString(i))
-                                .day(Integer.toString(j))
-                                .section(Integer.toString(k))
-                                .state(0)
+                        scheduleCourseMapper.insert(s);
+                        ScheduleCourse s2 = ScheduleCourse.builder()
+                                .labId(l.getNumber())
+                                .week(i)
+                                .name("无")
+                                .state(true)
+                                .day(j)
+                                .section(k)
                                 .build();
-                        scheduleMapper.insert(s);
-                        scheduleMapper.insert(s2);
+                        scheduleCourseMapper.insert(s2);
                     }
                 }
             }

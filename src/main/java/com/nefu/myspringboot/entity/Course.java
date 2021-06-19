@@ -17,12 +17,17 @@ import lombok.*;
 @AllArgsConstructor
 @TableName("course")
 public class Course {
-    @ApiModelProperty("课程编号")
     private Long id;
+    @ApiModelProperty("课程编号")
+    private Long cid;
     @ApiModelProperty("课程名称")
     private String name;
     @ApiModelProperty("该课程的老师编号")
-    private Long teacherId;
+    private String teacherId;
+    @ApiModelProperty("该课程的学生数量")
+    private Integer studentNumber;
+    @ApiModelProperty("该课程的课时")
+    private Integer hours;
     @TableField(updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime createTime;
 

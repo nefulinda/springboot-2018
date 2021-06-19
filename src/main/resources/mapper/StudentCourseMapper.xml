@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.nefu.myspringboot.mapper.StudentCourseMapper">
 
-    <delete id="deleteSCBySid" parameterType="com.nefu.myspringboot.entity.StudentCourse">
+    <delete id="deleteSCBySid" parameterType="long" >
        delete from student_course  where student_course.student_id=#{sid}
     </delete>
 </mapper>
