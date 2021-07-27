@@ -24,7 +24,7 @@
         s.teacher_id s_teacher_id
         from   laboratory l  join  schedule_course s on l.number=s.lab_id
     </select>
-    <select id="state" resultType="_int">
+    <select id="state" resultType="_boolean">
        select s.state
         from schedule_course s  where s.lab_id=#{labId} and s.week=#{week} and s.day=#{day} and s.section=#{section}
     </select>

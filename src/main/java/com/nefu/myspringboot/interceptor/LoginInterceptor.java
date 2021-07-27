@@ -4,6 +4,7 @@ package com.nefu.myspringboot.interceptor;
 
 import com.nefu.myspringboot.common.EncryptComponent;
 import com.nefu.myspringboot.common.MyException;
+import com.nefu.myspringboot.utils.UserThreadLocal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,5 +30,10 @@ public class LoginInterceptor implements HandlerInterceptor {
         request.setAttribute("uid", result.get("uid"));
         request.setAttribute("role", result.get("role"));
         return true;
+    }
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        //如果不删除 ThreadLocal中用完的信息 会有内存泄漏的风险
+        UserThreadLocal.remove();
     }
 }

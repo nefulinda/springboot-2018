@@ -13,7 +13,7 @@ import java.util.List;
 @Mapper
 public interface ScheduleCourseMapper extends BaseMapper<ScheduleCourse> {
     List<LaboratoryDTO> listCourses();
-    int  state(@Param("labId") long labId, @Param("week")int week, @Param("day")int day, @Param("section")int section);
+    boolean state(@Param("labId") long labId, @Param("week")int week, @Param("day")int day, @Param("section")int section);
     int updateSchedule(@Param("labId") long labId, @Param("week")int week, @Param("day")int day, @Param("section")int section,@Param("state") boolean state,
                        @Param("teacherId")long teacherId,@Param("name")String name);
 }

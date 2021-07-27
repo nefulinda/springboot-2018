@@ -20,6 +20,7 @@ public class SwaggerConfig {
     // 添加输入token全局验证按钮
     @Bean
     public Docket createRestApi() {
+
         SecurityContext t = SecurityContext.builder()
                 .securityReferences(List.of(new SecurityReference("token",
                         new AuthorizationScope[]{new AuthorizationScope("global", "")})))

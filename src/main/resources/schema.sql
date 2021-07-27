@@ -86,43 +86,29 @@ create table if not exists schedule_course
     update_time datetime   not null default current_timestamp on update current_timestamp,
     index (lab_id)
 );
-# create table if not exists notice
-# (
-#     id          bigint(19)  not null primary key,
-#     title       varchar(45) not null,
-#     context     varchar(2000),
-#     create_time datetime    not null default current_timestamp,
-#     update_time datetime    not null default current_timestamp on update current_timestamp,
-#     order    int                  default 0,
-#     index (id)
-# );
-# create table if not exists schedule
-# (
-#     id      bigint(19) not null primary key,
-#     lab_id  int        not null,
-#     cid     bigint(19) default 0,
-#     week    varchar(3),
-#     day     varchar(3),
-#     section varchar(3),
-#     state   int        default 0,
-#     version int        default 0,
-#     index (lab_id)
-# );
-# create table if not exists schedule_course
-# (
-#     id          bigint(19)  not null primary key,
-#     lab_id      int         not null,
-#     cid         bigint(19)           default 0,
-#     week        varchar(3),
-#     day         varchar(3),
-#     section     varchar(3),
-#     state       boolean                  default true,
-#     version     int                  default 0,
-#     name        varchar(32) not null,
-#     teacher_id  bigint(19)  not null,
-#     create_time datetime    not null default current_timestamp,
-#     update_time datetime    not null default current_timestamp on update current_timestamp,
-#     index (lab_id)
+create table if not exists notice
+(
+    id          bigint(19)  not null primary key,
+    title       varchar(45) not null,
+    context     varchar(2000),
+    create_time datetime    not null default current_timestamp,
+    update_time datetime    not null default current_timestamp on update current_timestamp,
+    version  int                  default 0,
+    index (id)
+);
+CREATE TABLE machine (
+                           `mid` int NOT NULL,
+                           `mname` varchar(32) NOT NULL,
+                           `mnumber` varchar(8) NOT NULL,
+                           `mtype` varchar(16) NOT NULL,
+                           `mstate` varchar(8) NOT NULL,
+                           `muser` varchar(12) NOT NULL,
+                           `mplace` varchar(24) NOT NULL,
+                           create_time datetime    not null default current_timestamp,
+                           update_time datetime    not null default current_timestamp on update current_timestamp,
+                           version  int                  default 0,
+                           PRIMARY KEY (`mid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 # )
 
 

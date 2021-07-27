@@ -54,6 +54,7 @@ public class LaboratoryService {
         Laboratory l = selectLab(lab.getNumber());
         if (l != null) {
             for (ScheduleCourse s : lab.getSchedule()) {
+                if (scheduleCourseMapper.state(lab.getNumber(), s.getWeek(), s.getDay(), s.getSection()))
                 scheduleCourseMapper.updateSchedule(lab.getNumber(), s.getWeek(), s.getDay(), s.getSection(), s.isState(), s.getTeacherId(), s.getName());
 //                for (int i = 1; i <= Hour.WEEK; i++) {
 //                    for (int j = 1; j <= Hour.DAY; j++) {

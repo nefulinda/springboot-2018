@@ -14,7 +14,6 @@ services:
       - password=root
     depends_on:
       - nefulab-mysql
-#      - nefulab-nginx
 
   nefulab-mysql:
     image: mysql:8
@@ -25,11 +24,3 @@ services:
     environment:
       TZ: Asia/Shanghai
       MYSQL_ROOT_PASSWORD: root
-#  nefulab-nginx:
-#    image: nginx:latest
-#    ports:
-#      -80:80
-#    volumes:
-#      - ./nginx/html:/usr/share/nginx/html
-#      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-#    privileged: true # 解决nginx的文件调用的权限问题

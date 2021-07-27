@@ -15,6 +15,10 @@ import java.util.List;
 public class NoticeService {
     @Autowired
     private NoticeMapper noticeMapper;
+    public void  updateNotice(Notice notice){
+        noticeMapper.updateById(notice);
+    }
+    public Notice selectNotice(long id){ return noticeMapper.selectById(id);}
     //添加公告
     public void addNotice(Notice notice){
         noticeMapper.insert(notice);

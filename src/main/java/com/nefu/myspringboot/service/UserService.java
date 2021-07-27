@@ -39,6 +39,7 @@ public class UserService {
     @Autowired
     private LaboratoryMapper laboratoryMapper;
 
+
     //修改权限
     public void updateRole(User u) {
         userMapper.updateById(User.builder().id(u.getId()).role(u.getRole()).build());
